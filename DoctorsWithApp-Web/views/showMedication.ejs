@@ -1,0 +1,18 @@
+Here are the current medications for <%= patientName %> :
+
+<ul>
+<% medicines.forEach((medicine) => { %>
+	<li><b>Name of Medicine:</b> <%= medicine.name %>
+		<br>
+		<b>Number of Medicine To Take:</b> <%= medicine.count %>
+		<br>
+		<b>When to Take Medicine:</b> <%= medicine.timeToTake %>
+		<br>
+		<b>Common Side Effects:</b> <%= medicine.sideEffect %>
+		<br>
+		<b>Total Times To Take Medine Per Day:</b> <%= medicine.timePerDay %>
+		<br>
+		<b>Reason For Consumption:</b> <%= medicine.reason %>
+	</li>
+<% }); %>
+</ul>

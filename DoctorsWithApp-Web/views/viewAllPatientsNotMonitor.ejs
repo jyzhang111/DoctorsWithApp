@@ -1,0 +1,9 @@
+These are all the patients you are not monitoring:
+<p>
+[
+<% for(var i = 0; i < patients.length; i++){ %>
+	<%=patients[i]%>, 
+<%}%>
+]
+<p>
+<a href="/addNewMonitorPatient?name=<%= doctor.name %>">Back</a>

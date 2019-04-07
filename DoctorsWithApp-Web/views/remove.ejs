@@ -1,0 +1,6 @@
+Select patient you want to remove from the patients you monitor:
+<p>
+<% for(var i = 0; i < patients.length; i++) {%>
+<a href="/remove2?name=<%= doctorName %>&patientName=<%= patients[i] %>"><%= patients[i] %></a>
+<p>
+<%}%>

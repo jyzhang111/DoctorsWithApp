@@ -1,0 +1,28 @@
+<% if (additionalMessage) {%>
+<%= additionalMessage%>
+<% }
+else {
+if (newAcc) {%>
+Successfully created new account for: <%= doctorName %>
+<% } 
+else {%>
+Welcome back, <%= doctorName %>
+<% } }%>
+<p>
+<a href="/beforeAddPill?name=<%= doctorName %>">Add medication to a patient </a>
+<p>
+<a href="/viewPill?name=<%= doctorName %>">View patient's current medicines </a>
+<p>
+<a href="/viewPill2?name=<%= doctorName %>">View patient's past medicines </a>
+<p>
+<a href="/addNewMonitorPatient?name=<%= doctorName %>">Add new patient (to the patients you monitor)</a>
+<p>
+<a href="/createPatient?name=<%= doctorName %>">Create new patient (and add them to patients you monitor)</a>
+<p>
+<a href="/remove?name=<%= doctorName %>">Remove patient (remove them from patients you monitor)</a>
+<p>
+<a href="/removeFromAll?name=<%= doctorName %>">Remove patient from database (deletes the patient and all references to it from doctors)</a>
+<p>
+<a href="/viewPatient?name=<%= doctorName %>">Current Patient </a>
+<p>
+<a href="/">Logout</a>

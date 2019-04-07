@@ -1,0 +1,12 @@
+The following are all patients attached to you:
+<form action = "/viewPatientDetail?name=<%= doctorName %> method = "post">
+Type In Patient Name: <input name = "patientName">
+<p>
+<input type = "submit" value = "submit">
+
+<p>
+<% for(var i = 0; i < patients.length; i++) { %>
+<a href="/viewPatientDetail?name=<%= doctorName %>&patientName=<%= patients[i] %>"><%= patients[i] %></a>
+<p>
+<%}%>
+</form>

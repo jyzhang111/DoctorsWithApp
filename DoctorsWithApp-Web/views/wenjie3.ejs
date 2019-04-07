@@ -1,0 +1,16 @@
+Here is the note of this patient (only visible to doctor):
+<ul>
+<%var i = 1;%>
+<% patientNoteArray.forEach((note) => { %>
+	<li><b>Note <%=i%> is:</b> <%= note %></li>
+	<% i = i + 1;%>
+<%});%>
+</ul>
+
+<form action="/deleteNote?doctorName=<%= doctorName %>&patientName=<%= patientName%>" method="post">
+
+Enter which note you want to delete: <input name="num">
+<p>
+<input type = "submit" value = "submit">
+<p>
+</form>

@@ -1,0 +1,27 @@
+<form action="/createPatient2?name=<%= doctorName %>" method="post">
+
+Patient Username: <input name="username">
+<p>
+Patient Password: <input name ="password">
+<p>
+Patient Name: <input name ="name">
+<p>
+Patient Age: <input name ="age">
+<p>
+<input type="radio" name="gender" value="male"> Male<br>
+<input type="radio" name="gender" value="female"> Female<br>
+<input type="radio" name="gender" value="other"> Other
+<p>
+Patient Insurance Company: <input name ="insuranceCompany">
+<p>
+Patient Insurance Number: <input name ="insuranceNumber">
+<p>
+Patient Allergies: <input name ="allergies">
+<p>
+Patient Past Surgeries: <input name ="pastSurgeries">
+<p>
+<input type="submit" value="Create Patient">
+<p>
+<a href="/cancelCreatePatient?name=<%= doctorName %>">Cancel</a>
+
+</form>
