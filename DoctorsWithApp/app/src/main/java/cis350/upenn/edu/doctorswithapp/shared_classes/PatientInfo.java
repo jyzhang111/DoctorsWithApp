@@ -10,8 +10,13 @@ public class PatientInfo {
     private String gender;
     //put more fields here, make new getters and setter for them
     private List<Doctor> doctors;
+    private String insuranceCompany;
+    private String insuranceNumber;
+    private String allergies;
+    private String pastSurgeries;
 
-    public PatientInfo(String password, String name, int age, String gender, Doctor doctor){
+    public PatientInfo(String password, String name, int age, String gender, Doctor doctor,
+                       String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries){
         this.password = password;
         this.name = name;
         this.age = age;
@@ -19,6 +24,11 @@ public class PatientInfo {
 
         doctors = new ArrayList<Doctor>();
         doctors.add(doctor);
+
+        this.insuranceCompany = insuranceCompany;
+        this.insuranceNumber = insuranceNumber;
+        this.allergies = allergies;
+        this.pastSurgeries = pastSurgeries;
     }
 
     public String getPassword(){
@@ -36,6 +46,10 @@ public class PatientInfo {
     public List<Doctor> getDoctors(){
         return doctors;
     }
+    public String getInsComp() { return insuranceCompany; }
+    public String getInsNum() { return insuranceNumber; }
+    public String getAllergies() {return allergies; }
+    public String getPastSurgeries() { return pastSurgeries; }
 
     public void setPassword(String password){
         this.password = password;
@@ -52,4 +66,8 @@ public class PatientInfo {
     public void addDoctor(Doctor docter){
         doctors.add(docter);
     }
+    public void setInsComp(String insComp) { this.insuranceCompany = insComp;  }
+    public void setInsNum(String insNum) { this.insuranceNumber = insNum; }
+    public void addAllergy(String allerg) { this.allergies = this.allergies + allerg; }
+    public void addSurgery(String surgery) { this.pastSurgeries = this.pastSurgeries + surgery; }
 }

@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/login2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:onClick="onLogoutButtonClick"
+        android:text="Logout" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Side Effects"
+        android:textColorLink="@color/colorPrimary"
+        android:textSize="30sp" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="30"
+            android:onClick="onBackButtonClick"
+            android:text="Back to Main" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/showSideEffects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Side Effects" />
+
+    <TextView
+        android:id="@+id/sideEffectsDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="here is side effects:" />
+
+
+</LinearLayout>

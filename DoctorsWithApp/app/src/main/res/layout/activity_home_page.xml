@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <Button android:id="@+id/login"
-        android:text="Logout"
+    <Button
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:onClick="onLogoutButtonClick"/>
+        android:onClick="onLogoutButtonClick"
+        android:text="Logout" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="DoctorsWithApp"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/getInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onInfoButtonClick"
+            android:text="My Info" />
+
+
+        <Button
+            android:id="@+id/getCurrentPills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCurrentPillsButtonClick"
+            android:text="Current Pills"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/getPastPills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onPastPillsButtonClick"
+            android:text="Past Pills"
+            android:visibility="visible" />
+        <Button
+            android:id="@+id/getSideEffects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSideEffectsButtonClick"
+            android:text="Side Effects"
+            android:visibility="visible" />
+
+    </LinearLayout>
 
 </LinearLayout>

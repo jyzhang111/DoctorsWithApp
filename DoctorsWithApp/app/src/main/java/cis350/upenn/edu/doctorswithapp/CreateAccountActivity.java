@@ -47,6 +47,19 @@ public class CreateAccountActivity extends AppCompatActivity {
         EditText doctor = (EditText)findViewById(R.id.doctor);
         String doc = doctor.getText().toString();
 
+        EditText insuranceComp = (EditText)findViewById(R.id.insComp);
+        String insComp = insuranceComp.getText().toString();
+
+        EditText insuranceNum = (EditText)findViewById(R.id.insNum);
+        String insNum = insuranceComp.getText().toString();
+
+        EditText allergies = (EditText)findViewById(R.id.allergy);
+        String aller = insuranceComp.getText().toString();
+
+        EditText pastSurgeries = (EditText)findViewById(R.id.pastSurgery);
+        String pastSurgs = insuranceComp.getText().toString();
+
+
         boolean correct = true;
         if(MainActivity.processor.usernameTaken(user)){
             username.setText("");
@@ -91,8 +104,10 @@ public class CreateAccountActivity extends AppCompatActivity {
             doctor_error.setText(" ");
         }
 
+
+
         if(correct){
-            MainActivity.processor.createNewAccount(user, pass1, n, a, g, doc);
+            MainActivity.processor.createNewAccount(user, pass1, n, a, g, doc, insComp, insNum, aller, pastSurgs);
 
             Intent i = new Intent(this, HomePageActivity.class);
             i.putExtra("USERNAME", user);

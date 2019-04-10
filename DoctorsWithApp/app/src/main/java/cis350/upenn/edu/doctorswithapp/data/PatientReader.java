@@ -8,4 +8,5 @@ public interface PatientReader {
 
     public void put(String user, PatientInfo pi);
     // edits existing info if patient user already there, adds new patient if not
+
 }

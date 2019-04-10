@@ -51,11 +51,14 @@ public class FilePatientReader implements PatientReader {
                 String gender = in.next();
                 String ds = in.next();
                 String[] docs = ds.split("[\\[\\],]");
+                Doctor doctor = new Doctor(docs[0]);
+                String insComp = in.next();
+                String insNum = in.next();
+                String allergies = in.next();
+                String pastSurg = in.next();
                 if(in.hasNext()) in.nextLine();
 
-                Doctor doctor = new Doctor(docs[0]);
-
-                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor);
+                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg);
 
                 for(int i = 1; i < docs.length; i++){
                     doctor = new Doctor(docs[i]);
@@ -69,7 +72,9 @@ public class FilePatientReader implements PatientReader {
             Log.v("here", "could not create Scanner in getPatients");
         }
         finally{
-            in.close();
+            if(in != null) {
+                in.close();
+            }
         }
         return patients;
     }
@@ -109,7 +114,10 @@ public class FilePatientReader implements PatientReader {
 
                 writer.println(entry.getKey() + "\t" + entry.getValue().getPassword() + "\t"
                         + entry.getValue().getName() + "\t" + entry.getValue().getAge() + "\t"
-                        + entry.getValue().getGender() + "\t" + docString);
+                        + entry.getValue().getGender() + "\t" + docString + "\t"
+                        + entry.getValue().getInsComp() + "\t" + entry.getValue().getInsNum() + "\t"
+                        + entry.getValue().getAllergies() + "\t"  + entry.getValue().getPastSurgeries());
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -118,4 +126,5 @@ public class FilePatientReader implements PatientReader {
             writer.close();
         }
     }
+
 }

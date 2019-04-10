@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">DoctorsWithApp</string>
-    
+    <string name="pastPills" />
+    <string name="past_pills">Past Pills</string>
+    <string name="show_pills">Show Pills</string>
+
     <string-array name="genders">
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
     </string-array>
+    <string name="title_activity_current_pills">CurrentPillsActivity</string>
 </resources>

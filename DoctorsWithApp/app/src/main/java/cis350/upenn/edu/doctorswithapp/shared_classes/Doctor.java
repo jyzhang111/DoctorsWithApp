@@ -10,4 +10,5 @@ public class Doctor {
     public String getName(){
         return name;
     }
+    public void changePillStatus() {return;}
 }
