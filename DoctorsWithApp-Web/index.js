@@ -108,7 +108,6 @@ app.use('/beforeAddPill', (req, res) => {
 
 app.use('/viewPatient', (req, res) => {
 	var searchName = req.query.name;
-
 	Doctor.findOne({name: searchName}, (err, doctor) => { 
 		if (err) {
 		    res.type('html').status(200);
@@ -130,7 +129,7 @@ app.use('/viewPatient', (req, res) => {
 app.use('/viewNote', (req, res) =>{
 	var patientName = req.query.patientName;
 	var doctorName = req.query.name;
-	Patient.findOne({name:patientName}, (err, patient) => {
+	Patient.findOne({username:patientName}, (err, patient) => {
 		if(err){
 			res.type('html').status(200);
 			res.write("uh oh: " + err);
@@ -147,7 +146,7 @@ app.use('/viewNote', (req, res) =>{
 		}
 		else{
 			var patientNoteArray = patient.noteArray;
-			res.render('wenjie3', {doctorName:doctorName, patientName:patient.name, patientNoteArray:patientNoteArray});
+			res.render('wenjie3', {doctorName:doctorName, patientName:patientName, patientNoteArray:patientNoteArray});
 		}
 	});
 });
@@ -156,15 +155,170 @@ app.use('/viewNote', (req, res) =>{
 app.use('/addNote', (req, res) =>{
 	var patientName = req.query.patient;
 	var doctorName = req.query.name;
-	var patient = req.query.patientObject;
-	res.render('addPatientNote', {doctorName:doctorName, patient:patientName, patientObject : patient});
+	res.render('addPatientNote', {doctorName:doctorName, patient:patientName});
 });
+
+
+
+app.use('/changePill', (req, res) =>{
+	var patientName = req.query.patient;
+	var doctorName = req.query.name;
+	var pillName = req.query.pill;
+	res.render('updatePillInfo', {doctorName:doctorName, patient:patientName, pillName:pillName});
+});
+
+
+app.use('/updatePillInfo2', (req, res) => {
+	var searchName = req.query.name;
+	var medName = req.query.pillName;
+	var medPatientName = req.query.patientName;
+	var medSideEffect = req.body.sideEffect;
+	var medTotal1 = req.body.count;
+	var medTime = req.body.timeToTake;
+	var medTotal2 = req.body.timePerDay;
+	var medReason = req.body.reason;
+	var medColor = req.body.color;
+	var medIsPastPill = req.body.isPastPill;
+
+	Doctor.findOne( {name: searchName}, (err, doctor) => { 
+		if (err) {
+		    res.type('html').status(200);
+		    res.write('uh oh 1: ' + err);
+		    console.log(err);
+		    res.end();
+		}
+		else if (!doctor){
+		    res.type('html').status(200);
+		    res.send("No doctor named " + searchName);
+		}
+		else if(!doctor.patientArray.includes(medPatientName)){
+			res.type('html').status(200);
+		    	res.send("You are not  monitoring patient: " + medPatientName);
+		}
+		else {
+			Medicine.findOne( {name: medName, patientName: medPatientName}, (err, medicine) => { 
+		if (err) {
+			res.type('html').status(200);
+			res.write('uh oh 2: ' + err);
+			console.log(err);
+			res.end();
+		}
+		else if (!medicine){
+			res.type('html').status(200);
+			res.send("No medicine associated with " + medPatientName);
+		}
+		else{
+			medicine.sideEffect = medSideEffect;
+			medicine.count = medTotal1;
+			medicine.timeToTake = medTime;
+			medicine.timePerDay = medTotal2;
+			medicine.reason = medReason;
+			medicine.color = medColor;
+			medicine.isPastPill = medIsPastPill;
+
+			medicine.save( (err) => {
+				if (err) {
+					res.type('html').status(500);
+					res.send('Error: ' + err);
+				} else {
+		    var additionalMessage = "Updated " + medName + " information of " + medPatientName + " successfully!" ;
+		    res.render('home', {doctorName : searchName, additionalMessage : additionalMessage});
+				}
+			});
+		}
+	});
+		}
+	});
+});
+
+app.use('/deletePill', (req, res) => {
+	var searchName = req.query.doctorName;
+	var medName = req.query.pillName;
+	var medPatientName = req.query.patientName;
+	var medSideEffect = req.body.sideEffect;
+	var medTotal1 = req.body.count;
+	var medTime = req.body.timeToTake;
+	var medTotal2 = req.body.timePerDay;
+	var medReason = req.body.reason;
+	var medColor = req.body.color;
+	var medIsPastPill = req.body.isPastPill;
+
+	Doctor.findOne( {name: searchName}, (err, doctor) => { 
+		if (err) {
+		    res.type('html').status(200);
+		    res.write('uh oh 1: ' + err);
+		    console.log(err);
+		    res.end();
+		}
+		else if (!doctor){
+		    res.type('html').status(200);
+		    res.send("No doctor named " + searchName);
+		}
+		else if(!doctor.patientArray.includes(medPatientName)){
+			res.type('html').status(200);
+		    	res.send("You are not  monitoring patient: " + medPatientName);
+		}
+		else {
+			Medicine.findOne( {name: medName, patientName: medPatientName}, (err, medicine) => { 
+		if (err) {
+			res.type('html').status(200);
+			res.write('uh oh 2: ' + err);
+			console.log(err);
+			res.end();
+		}
+		else if (!medicine){
+			res.type('html').status(200);
+			res.send("No medicine associated with " + medPatientName);
+		}
+		else{
+			Medicine.deleteOne( {name: medName, patientName: medPatientName}, (err) => { 
+			if (err) {
+				res.type('html').status(200);
+				res.write('uh oh: ' + err);
+				console.log(err);
+				res.end();
+			}
+			else{
+				var additionalMessage = "Removed " + medName + " from the database of " + medPatientName +"!";
+				res.render('home', {doctorName : searchName, additionalMessage : additionalMessage});
+			}
+		    });
+		}
+	});
+		}
+	});
+});
+
+app.use('/viewChange', (req, res) =>{
+	var patientName = req.query.patientName;
+	var doctorName = req.query.name;
+	Patient.findOne({username:patientName}, (err, patient) => {
+		if(err){
+			res.type('html').status(200);
+			res.write("uh oh: " + err);
+			console.log(err);
+			res.end();
+		}
+		else if(!patient){
+			res.type('html').status(200);
+			res.send("No patient named " + patientName);
+		}
+		else if(patient.noteArray.length == 0){
+			res.type('html').status(200);
+			res.send("No note attached now!");
+		}
+		else{
+			res.render('seeUpdatedPill', {doctorName:doctorName, patientName:patientName});
+		}
+	});
+});
+
 
 app.use('/deleteNote', (req,res)=>{
 	var doctorName = req.query.doctorName;
 	var patientName = req.query.patientName;
 	var num = req.body.num;
-	Patient.findOne({name:patientName}, (err, patient) =>{
+	Patient.findOne({username:patientName}, (err, patient) =>{
 		if(err){
 			res.type('html').status(200);
 			res.write("uh oh: " + err);
@@ -174,11 +328,7 @@ app.use('/deleteNote', (req,res)=>{
 			res.type('html').status(200);
 			res.send('No patient named ' + patientName);
 		}
-		else if(((num)<1) || ((num)>patient.noteArray.length)){
-			res.type('html').status(200);
-			res.send('Invalid number, please type again!');
-		}
-		else{
+		else if(!(isNaN(num)) && ((num)>=1) && ((num)<=patient.noteArray.length)){
 			patient.noteArray.splice(num-1,1);
 			patient.save((err) => {
 				if(err){
@@ -191,6 +341,10 @@ app.use('/deleteNote', (req,res)=>{
 				}
 			});
 		}
+		else{
+			res.type('html').status(200);
+			res.send('Invalid number, please type again!');
+		}
 	});
 });
 
@@ -199,7 +353,7 @@ app.use('/addPatientNote2', (req, res) =>{
 	var doctorName = req.query.name;
 	var patientNote = req.body.note;
 	var i;
-	Patient.findOne({name:patientName}, (err, patient)=>{
+	Patient.findOne({username:patientName}, (err, patient)=>{
 		if(err){
 			res.type('html').status(200);
 			res.write("uh oh: " + err);
@@ -231,8 +385,11 @@ app.use('/addPatientNote2', (req, res) =>{
 app.use('/viewPatientDetail', (req, res) => {
 	var doctorName = req.query.name;
 	var patientName = req.query.patientName;
-	//console.log(doctorName);
-	Patient.findOne({name: patientName}, (err, patient) => { 
+	var patientName2 = req.body.patientName;
+	if(patientName2){
+		patientName = patientName2;
+	}
+	Patient.findOne({username: patientName}, (err, patient) => { 
 		if (err) {
 		    res.type('html').status(200);
 		    res.write('uh oh: ' + err);
@@ -245,7 +402,7 @@ app.use('/viewPatientDetail', (req, res) => {
 		}
 		else{
 			//console.log(patient);			
-			res.render('wenjie2', {patient : patientName, doctorName : doctorName, patientObject : patient});
+			res.render('wenjie2', {patient : patientName, doctorName : doctorName});
 		}
 	});
 });
@@ -266,7 +423,7 @@ app.use('/viewPill', (req, res) => {
 		}
 		else{
 			var patientArr = doctor.patientArray;
-			res.render('showMyPatients', {patients : patientArr, doctorName : doctor});
+			res.render('showMyPatients', {patients : patientArr, doctorName : searchName});
 		}
 	});
 });
@@ -419,7 +576,7 @@ app.use('/addNewMonitorPatient2', (req, res) => {
 		    	res.send("You are already monitoring patient: " + patientUsername);
 		    }
 		    else{
-			Patient.findOne( {name: patientUsername}, (err, patient) => { 
+			Patient.findOne( {username: patientUsername}, (err, patient) => { 
 				if (err) {
 					res.type('html').status(200);
 					res.write('uh oh: ' + err);
@@ -504,6 +661,7 @@ app.use('/createPatient2', (req, res) => {
 
 	if(error !== ""){
 		res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
+		res.end();
 	}
 
 	// construct the Patient from the form data which is in the request body
@@ -538,6 +696,7 @@ app.use('/createPatient2', (req, res) => {
 		else if (!doctor){
 		    res.type('html').status(200);
 		    res.send("No doctor named " + searchName);
+		    res.end();
 		}
 		else{
 		    doctor.patientArray.push(patientUsername);
@@ -588,6 +747,7 @@ app.use('/addPill', (req, res) => {
 	var medTime = req.body.timeToTake;
 	var medTotal = req.body.timePerDay;
 	var medReason = req.body.reason;
+	var medColor = req.body.color;
 
 	Doctor.findOne( {name: searchName}, (err, doctor) => { 
 		if (err) {
@@ -605,7 +765,7 @@ app.use('/addPill', (req, res) => {
 		    	res.send("You are not  monitoring patient: " + medPatientName);
 		}
 		else {
-			Patient.findOne( {name: medPatientName}, (err, patient) => { 
+			Patient.findOne( {username: medPatientName}, (err, patient) => { 
 		if (err) {
 			res.type('html').status(200);
 			res.write('uh oh: ' + err);
@@ -624,7 +784,8 @@ app.use('/addPill', (req, res) => {
 				count: medTotal,
 				timeToTake: medTime,
 				timePerDay: medTotal,
-				reason: medReason
+				reason: medReason,
+				color: medColor
 			});
 
 			newMedicine.save( (err) => {
@@ -677,7 +838,7 @@ app.use('/remove2', (req, res) => {
 				res.end();
 			}
 		    });
-		    Patient.findOne( {name: patientUsername}, (err, patient) => { 
+		    Patient.findOne( {username: patientUsername}, (err, patient) => { 
 			if (err) {
 				res.type('html').status(200);
 				res.write('uh oh: ' + err);
@@ -806,6 +967,7 @@ app.use('/all', (req, res) => {
 		    res.type('html').status(200);
 		    console.log('uh oh' + err);
 		    res.write(err);
+		    res.end();
 		}
 		else {
 		    if (doctors.length == 0) {
@@ -862,8 +1024,39 @@ app.use('/api', (req, res) => {
 	    });
     });
 
+// route for cleaning everything
+app.use('/clean', (req, res) =>{ res.render('clean'); });
 
+app.use('/clean2', (req, res) =>{ 
+	Patient.deleteMany({}, (err) => {
+		if(err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write("Can't delete Patient.");
+		    res.end();
+		}
+	});
 
+	Doctor.deleteMany({}, (err) => {
+		if(err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write("Can't delete Doctor.");
+		    res.end();
+		}
+	});
+
+	Medicine.deleteMany({}, (err) => {
+		if(err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write("Can't delete Medicine.");
+		    res.end();
+		}
+	});
+
+	res.redirect('/public/login.html');
+});
 
 /*************************************************/
 

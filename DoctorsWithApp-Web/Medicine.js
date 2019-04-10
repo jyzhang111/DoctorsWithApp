@@ -12,7 +12,8 @@ var medicineSchema = new Schema({
 	count: {type: Number, required: true},
 	timeToTake: {type: String, required: true},
 	reason: {type: String, required: false},
-	timePerDay: {type: Number, required: true}
+	timePerDay: {type: Number, required: true},
+	color: {type: String, enum: ["red", "orange", "yellow", "green", "blue", "indigo", "violet", "brown", "white", "black"]}
 });
 
 module.exports = mongoose.model('Medicine', medicineSchema);

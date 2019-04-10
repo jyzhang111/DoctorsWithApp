@@ -10,9 +10,20 @@ Here are the current medications for <%= patientName %> :
 		<br>
 		<b>Common Side Effects:</b> <%= medicine.sideEffect %>
 		<br>
-		<b>Total Times To Take Medine Per Day:</b> <%= medicine.timePerDay %>
+		<b>Total Times To Take Medicine Per Day:</b> <%= medicine.timePerDay %>
 		<br>
 		<b>Reason For Consumption:</b> <%= medicine.reason %>
+		<br>
+		<b>Color of Medicine:</b> <%= medicine.color %>
+		<br>
+		<br>
+		<a href="/changePill?name=<%= doctorName%>&patient=<%= patientName%>&pill=<%= medicine.name%>">Change Pill Information </a>
+		<form action="/deletePill?doctorName=<%= doctorName %>&patientName=<%= patientName%>&pillName=<%= medicine.name%>" method="post">
+		<p>
+		<input type = "submit" value = "Delete Pill">
+		<p>
+		</form>
+		<br>
 	</li>
 <% }); %>
 </ul>

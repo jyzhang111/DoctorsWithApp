@@ -9,6 +9,8 @@ else {%>
 Welcome back, <%= doctorName %>
 <% } }%>
 <p>
+<a href="/viewPatient?name=<%= doctorName %>">Current Patients </a>
+<p>
 <a href="/beforeAddPill?name=<%= doctorName %>">Add medication to a patient </a>
 <p>
 <a href="/viewPill?name=<%= doctorName %>">View patient's current medicines </a>
@@ -22,7 +24,5 @@ Welcome back, <%= doctorName %>
 <a href="/remove?name=<%= doctorName %>">Remove patient (remove them from patients you monitor)</a>
 <p>
 <a href="/removeFromAll?name=<%= doctorName %>">Remove patient from database (deletes the patient and all references to it from doctors)</a>
-<p>
-<a href="/viewPatient?name=<%= doctorName %>">Current Patient </a>
 <p>
 <a href="/">Logout</a>

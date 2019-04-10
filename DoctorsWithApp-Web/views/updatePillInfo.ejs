@@ -1,8 +1,6 @@
-<form action="/addPill?name=<%= doctorName %>" method="post">
+<form action="/updatePillInfo2?name=<%= doctorName %>&patientName=<%= patient%>&pillName=<%= pillName%>" method="post">
 
-Medicine Name: <input name= "name">
-<p>
-Patient Name: <input name= "patientName">
+Medicine Name: <%= pillName %>
 <p>
 Medicine Side Effect: <input name ="sideEffect">
 <p>
@@ -27,6 +25,10 @@ Color of Medicine:
 <input type="radio" name="color" value="white"> White<br>
 <input type="radio" name="color" value="black"> Black<br>
 <p>
-<input type="submit" value="Create Medicine">
-
+Change to Past Pill:
+<p>
+<input type="radio" name="isPastPill" value="true"> True<br>
+<input type="radio" name="isPastPill" value="true"> False<br>
+<p>
+<input type="submit" value="Update Medication Information!">
 </form>
