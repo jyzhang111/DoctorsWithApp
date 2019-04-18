@@ -17,74 +17,102 @@ import android.util.Log;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DoctorWebTask  extends AsyncTask<URL, String, String> implements DoctorReader {
+public class DoctorWebTask extends AsyncTask<URL, String, String> implements DoctorReader {
+    private boolean getD;
+
     /*
     This method is called in background when this object's "execute"
     method is invoked.
     The arguments passed to "execute" are passed to this method.
     */
     protected String doInBackground(URL... urls) {
-        try {
+        StringBuilder sb = new StringBuilder();
 
-            File path = MainActivity.context.getFilesDir();
-            File file = new File(path, "doctors.txt");
+        if(getD) {
 
-            if(!file.exists()) {
-                try {
-                    file.createNewFile();
-                    PrintWriter out = new PrintWriter(new FileOutputStream(file, false));
-                    // get the first URL from the array
-                    URL url = urls[0];
-                    // create connection and send HTTP request
-                    HttpURLConnection conn =
-                            (HttpURLConnection)url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.connect();
-                    // read first line of data that is returned
-                    Scanner in = new Scanner(url.openStream());
-                    String msg = in.nextLine();
-                    // use Android JSON library to parse JSON
-                    JSONArray arr = new JSONArray(msg);
-                    for(int i = 0; i < arr.length(); i++) {
-                        JSONObject jo = arr.getJSONObject(i);
-                        // assumes that JSON object contains a "name" field
-                        String name = jo.getString("name");
-                        out.print(name);
-                        String password = jo.getString("docPassword");
-                        out.print(password);
-                        JSONArray patientArray = jo.getJSONArray("patArray");
-                        for (int j = 0; j < patientArray.length(); j++) {
-                            out.print(patientArray.optString(j));
-                        }
+            try {
+
+                // get the first URL from the array
+                URL url = urls[0];
+                // create connection and send HTTP request
+                HttpURLConnection conn =
+                        (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.connect();
+                // read first line of data that is returned
+                Scanner in = new Scanner(url.openStream());
+                String msg = in.nextLine();
+                // use Android JSON library to parse JSON
+                JSONArray arr = new JSONArray(msg);
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject jo = arr.getJSONObject(i);
+                    // assumes that JSON object contains a "name" field
+                    String name = jo.getString("name");
+                    sb.append(name + "\t");
+
+                    String password = jo.getString("docPassword");
+                    sb.append(password + "\t");
+
+                    sb.append("[");
+                    JSONArray patientArray = jo.getJSONArray("patArray");
+                    for (int j = 0; j < patientArray.length(); j++) {
+                        sb.append(patientArray.optString(j) + ",");
                     }
-
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.v("blah", "couldn't create file in FileDoctorReader.");
+                    sb.append("]\n");
                 }
+
+            } catch (Exception e) {
+                return e.toString();
             }
-
         }
-        catch (Exception e) {
-            return e.toString();
+        else{
+            try {
+                //sample code for what to do when we want to post data, when getD is false
+
+                URL url = urls[0];
+                HttpURLConnection conn =
+                        (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.connect();
+
+            } catch (Exception e) {
+                return e.toString();
+            }
         }
 
-        return "";
+        return sb.toString();
     }
 
     public List<Doctor> getDoctors(){
         List<Doctor> doctors = new ArrayList<Doctor>();
 
-        File path = MainActivity.context.getFilesDir();
-        File file = new File(path, "doctors.txt");
+        getD = true;
+
+        String largeDoctorString;
+
+        try {
+            URL url = new URL("http://10.0.2.2:3000/apiDoctor");
+            DoctorWebTask task = this;
+            task.execute(url);
+            largeDoctorString = task.get();
+        }
+        catch (Exception e) {
+            return null;
+        }
 
         Scanner in = null;
         try{
-            in = new Scanner(file);
+            in = new Scanner(largeDoctorString);
+            in.useDelimiter("\t|\n");
             while(in.hasNext()){
                 String name = in.next();
-                Doctor temp = new Doctor(name);
+                String patArrayString = in.next();
+                in.nextLine();
+
+                patArrayString = patArrayString.substring(1, patArrayString.length()-1);
+                String[] patNames = patArrayString.split(",");
+
+                Doctor temp = new Doctor(name, patNames);
                 doctors.add(temp);
             }
         }

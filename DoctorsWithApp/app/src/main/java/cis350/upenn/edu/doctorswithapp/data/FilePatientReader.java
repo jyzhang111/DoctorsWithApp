@@ -51,7 +51,7 @@ public class FilePatientReader implements PatientReader {
                 String gender = in.next();
                 String ds = in.next();
                 String[] docs = ds.split("[\\[\\],]");
-                Doctor doctor = new Doctor(docs[0]);
+                Doctor doctor = new Doctor(docs[0], new String[0]);
                 String insComp = in.next();
                 String insNum = in.next();
                 String allergies = in.next();
@@ -61,7 +61,7 @@ public class FilePatientReader implements PatientReader {
                 PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg);
 
                 for(int i = 1; i < docs.length; i++){
-                    doctor = new Doctor(docs[i]);
+                    doctor = new Doctor(docs[i], new String[0]);
                     pi.addDoctor(doctor);
                 }
 

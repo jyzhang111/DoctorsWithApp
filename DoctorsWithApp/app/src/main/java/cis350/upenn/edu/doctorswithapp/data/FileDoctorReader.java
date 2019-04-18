@@ -18,16 +18,14 @@ public class FileDoctorReader implements DoctorReader{
         File path = MainActivity.context.getFilesDir();
         File file = new File(path, "doctors.txt");
 
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-                PrintWriter out = new PrintWriter(new FileOutputStream(file, false));
-                out.print("Alice Bob");
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.v("blah", "couldn't create file in FileDoctorReader.");
-            }
+        try {
+            file.createNewFile();
+            PrintWriter out = new PrintWriter(new FileOutputStream(file, false));
+            out.print("Alice\t[]\nBob\t[]\n");
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.v("blah", "couldn't create file in FileDoctorReader.");
         }
     }
 
@@ -40,9 +38,17 @@ public class FileDoctorReader implements DoctorReader{
         Scanner in = null;
         try{
             in = new Scanner(file);
+            in.useDelimiter("\t|\n");
             while(in.hasNext()){
+
                 String name = in.next();
-                Doctor temp = new Doctor(name);
+                String patArrayString = in.next();
+                in.nextLine();
+
+                patArrayString = patArrayString.substring(1, patArrayString.length()-1);
+                String[] patNames = patArrayString.split(",");
+
+                Doctor temp = new Doctor(name, patNames);
                 doctors.add(temp);
             }
         }

@@ -1,21 +1,19 @@
 package cis350.upenn.edu.doctorswithapp.data;
-import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
-import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
 
-import java.net.URL;
+import android.os.AsyncTask;
+
+import org.json.JSONObject;
+
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import org.json.JSONObject;
-import org.json.JSONArray;
-import android.os.AsyncTask;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.TreeSet;
 
-public class MedicationWebTask extends AsyncTask<URL, String, String> implements MedicationReader{
-    public MedicationWebTask(){
+import cis350.upenn.edu.doctorswithapp.shared_classes.PatientInfo;
+
+public class PatientWebTask extends AsyncTask<URL, String, String> implements PatientReader {
+    public PatientWebTask(){
 
     }
 
@@ -56,9 +54,13 @@ public class MedicationWebTask extends AsyncTask<URL, String, String> implements
         // not implemented but you can use this if you’d like
     }
 
-    public Map<String, TreeSet<MedicationInfo>> getMedications() {
-        return new HashMap<String, TreeSet<MedicationInfo>>();
+    @Override
+    public Map<String, PatientInfo> getPatients() {
+        return new HashMap<String, PatientInfo>();
     }
 
-    public void put(String name, MedicationInfo med){}
+    @Override
+    public void put(String user, PatientInfo pi) {
+
+    }
 }
