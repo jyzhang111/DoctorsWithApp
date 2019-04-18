@@ -17,7 +17,7 @@ import android.util.Log;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DoctorWebTask  extends AsyncTask<URL, String, String> {
+public class DoctorWebTask  extends AsyncTask<URL, String, String> implements DoctorReader {
     /*
     This method is called in background when this object's "execute"
     method is invoked.
@@ -71,5 +71,29 @@ public class DoctorWebTask  extends AsyncTask<URL, String, String> {
         }
 
         return "";
+    }
+
+    public List<Doctor> getDoctors(){
+        List<Doctor> doctors = new ArrayList<Doctor>();
+
+        File path = MainActivity.context.getFilesDir();
+        File file = new File(path, "doctors.txt");
+
+        Scanner in = null;
+        try{
+            in = new Scanner(file);
+            while(in.hasNext()){
+                String name = in.next();
+                Doctor temp = new Doctor(name);
+                doctors.add(temp);
+            }
+        }
+        catch(Exception e){
+            throw new IllegalStateException(e);
+        }
+        finally{
+            in.close();
+        }
+        return doctors;
     }
 }
