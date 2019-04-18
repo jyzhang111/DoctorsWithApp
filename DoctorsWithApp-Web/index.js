@@ -588,6 +588,7 @@ app.use('/addNewMonitorPatient2', (req, res) => {
 					res.send("No patient named " + patientUsername);
 				}
 				else{
+					//patient.doctorArray.push(searchName);
 					doctor.patientArray.push(patientUsername);
 					doctor.save( (err) => { 
 						if (err) { 
@@ -658,6 +659,7 @@ app.use('/createPatient2', (req, res) => {
 	var patientAllergies = req.body.allergies;
 	var patientPastSurgeries = req.body.pastSurgeries;
 	var searchName = req.query.name;
+	var patientDoctors = [searchName];
 
 	if(error !== ""){
 		res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
@@ -671,6 +673,7 @@ app.use('/createPatient2', (req, res) => {
 		name: patientName,
 		age: patientAge,
 		gender: patientGender,
+		doctorArray: patientDoctors,
 		insuranceCompany: patientInsuranceCompany,
 		insuranceNumber: patientInsuranceNumber,
 		allergies: patientAllergies,
@@ -1056,6 +1059,35 @@ app.use('/clean2', (req, res) =>{
 	});
 
 	res.redirect('/public/login.html');
+});
+
+app.use('/apiPatient', (req, res) => {
+	console.log("Looking for patient");
+
+	var queryObject = {};
+	if (req.query.name) {
+		queryObject = { "name" : req.query.name};
+	}
+
+	Patient.find( queryObject, (err, persons) => {
+		console.log(persons);
+		if(err) {
+			console.log('uh oh' + err);
+			res.json({});
+		}
+		else if (persons.length == 0) {
+			res.json({});
+		} else if (persons.length == 1) {
+			var person = persons[0];
+			res.json( {"name" : person.name, "doctorArray" : person.doctorArray });
+		} else {
+			var returnArray = [];
+			persons.forEach((person) => { 
+				returnArray.push( {"name": person.name, "doctorArray" : person.doctorArray});
+			});
+			res.json(returnArray);
+		}
+	});
 });
 
 /*************************************************/
