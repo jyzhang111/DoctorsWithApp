@@ -1061,6 +1061,35 @@ app.use('/clean2', (req, res) =>{
 	res.redirect('/public/login.html');
 });
 
+app.use('/apiDoctor', (req, res) => {
+	console.log("Looking for doctor");
+
+	var queryObject = {};
+	if (req.query.name) {
+		queryObject = { "name" : req.query.name};
+	}
+
+	Doctor.find( queryObject, (err, persons) => {
+		console.log(persons);
+		if(err) {
+			console.log('uh oh' + err);
+			res.json({});
+		}
+		else if (persons.length == 0) {
+			res.json({});
+		} else if (persons.length == 1) {
+			var person = persons[0];
+			res.json( {"name" : person.name, "docPassword" : person.password, "patArray": person.patientArray});
+		} else {
+			var returnArray = [];
+			persons.forEach((person) => { 
+				returnArray.push( {"name": person.name, "docPassword" : person.password, "patArray": person.patientArray})
+			});
+			res.json(returnArray);
+		}
+	});
+});
+
 app.use('/apiPatient', (req, res) => {
 	console.log("Looking for patient");
 
@@ -1079,7 +1108,10 @@ app.use('/apiPatient', (req, res) => {
 			res.json({});
 		} else if (persons.length == 1) {
 			var person = persons[0];
-			res.json( {"name" : person.name, "doctorArray" : person.doctorArray });
+			res.json( {"name" : person.name, "doctorArray" : person.doctorArray, "username": person.username, 
+						"password": person.password, "age": person.age, "gender": person.gender, 
+						"insComp": person.insuranceCompany, "insNum": person.insuranceNumber,
+						"allergies": person.allergies, "pastSurg": person.pastSurgeries});
 		} else {
 			var returnArray = [];
 			persons.forEach((person) => { 
