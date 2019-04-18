@@ -3,6 +3,7 @@ import java.net.URL;
 
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 public class PatientInfo {
@@ -49,16 +50,18 @@ public class PatientInfo {
     //    return doctors;
     //}
 
-    public List<Doctor> getDoctors() {
+    public List<String> getDoctors() {
         try {
             URL url = new URL("http://10.0.2.2:3000/apiPatient?id=" + name);
-            AccessWebTask<URL, String, String> task = new AccessWebTask();
+            AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String name = task.get();
-            return name;
+            List<String> docs = Arrays.asList(name.split("\\s*,\\s*"));
+            return docs;
         }
         catch (Exception e) {
-            return e.toString();
+            List<String> str = new ArrayList<String>();
+            return str;
         }
     }
 

@@ -118,6 +118,8 @@ public class FilePatientReader implements PatientReader {
                         + entry.getValue().getInsComp() + "\t" + entry.getValue().getInsNum() + "\t"
                         + entry.getValue().getAllergies() + "\t"  + entry.getValue().getPastSurgeries());
 
+
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
