@@ -1,4 +1,6 @@
 package cis350.upenn.edu.doctorswithapp.shared_classes;
+import java.net.URL;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -43,9 +45,26 @@ public class PatientInfo {
     public String getGender(){
         return gender;
     }
-    public List<Doctor> getDoctors(){
-        return doctors;
+    //public List<Doctor> getDoctors(){
+    //    return doctors;
+    //}
+
+    public List<Doctor> getDoctors() {
+        try {
+            URL url = new URL("http://10.0.2.2:3000/apiPatient?id=" + name);
+            AccessWebTask<URL, String, String> task = new AccessWebTask();
+            task.execute(url);
+            String name = task.get();
+            return name;
+        }
+        catch (Exception e) {
+            return e.toString();
+        }
     }
+
+
+
+
     public String getInsComp() { return insuranceCompany; }
     public String getInsNum() { return insuranceNumber; }
     public String getAllergies() {return allergies; }

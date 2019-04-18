@@ -1,9 +1,14 @@
-package cis350.upenn.edu.doctorswithapp;
+package cis350.upenn.edu.doctorswithapp.shared_classes;
+import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.util.Scanner;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import android.os.AsyncTask;
+import java.util.List;
+import java.util.ArrayList;
+
 
 
 public class AccessWebTask extends AsyncTask<URL, String, String>{
@@ -23,9 +28,17 @@ public class AccessWebTask extends AsyncTask<URL, String, String>{
             // use Android JSON library to parse JSON
             JSONObject jo = new JSONObject(msg);
             // assumes that JSON object contains a "name" field
-            String name = jo.getString("name");
-            // this will be passed to onPostExecute method
-            return name;
+            JSONArray jsonArray = jo.getJSONArray("doctorArray");
+
+            String ans = "";
+            if (jsonArray != null) {
+                int len = jsonArray.length();
+                for (int i=0;i<len;i++){
+                    Doctor doc = (Doctor)jsonArray.get(i);
+                    ans+=doc.getName() + ",";
+                }
+            }
+            return ans;
         }
         catch (Exception e) {
             return e.toString();
