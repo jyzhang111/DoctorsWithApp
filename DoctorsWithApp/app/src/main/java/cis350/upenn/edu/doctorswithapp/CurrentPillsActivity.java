@@ -24,8 +24,7 @@ import cis350.upenn.edu.doctorswithapp.data.FileMedicationReader;
 import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
 
 public class CurrentPillsActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    private FileMedicationReader fileMedicationReader = new FileMedicationReader();
-    private Map<String, TreeSet<MedicationInfo>> medications = fileMedicationReader.getMedications();
+    private Map<String, TreeSet<MedicationInfo>> medications = MainActivity.processor.getMedications();
     private TextView mTextView;
 
     @Override

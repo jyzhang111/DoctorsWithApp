@@ -65,6 +65,10 @@ public abstract class Processor {
         }
     }
 
+    public Map<String, TreeSet<MedicationInfo>> getMedications(){
+        return med.getMedications();
+    }
+
     protected abstract DoctorReader createDoctorReader();
 
     protected abstract PatientReader createPatientReader();

@@ -16,8 +16,8 @@ import cis350.upenn.edu.doctorswithapp.data.FileMedicationReader;
 import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
 
 public class PastPillsActivity extends AppCompatActivity {
-    private FileMedicationReader fileMedicationReader = new FileMedicationReader();
-    private Map<String, TreeSet<MedicationInfo>> medications = fileMedicationReader.getMedications();
+    private Map<String, TreeSet<MedicationInfo>> medications = MainActivity.processor.getMedications();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.past_pills_page);
