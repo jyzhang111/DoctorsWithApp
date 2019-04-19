@@ -75,16 +75,15 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                         infoStr = infoStr + "Name of pill " + medInfo.getName() + "\n";
                         infoStr = infoStr + "Dosage: " + medInfo.getDosage() + "\n";
                         infoStr = infoStr + "Number of times to take pills in a day: " + medInfo.getNumPerDay() + "\n";
-                        Map<String, String> scheduleMap = medInfo.getSchedule();
-                        infoStr = infoStr + "Time to take pill: ";
-                        int sizeOne = 1;
-                        for (String time : scheduleMap.keySet()) {
-                            if (sizeOne != scheduleMap.size()) {
-                                infoStr = infoStr + scheduleMap.get(time) + ", ";
+                        List<String> scheduleList = medInfo.getSchedule();
+                        for (int i = 0; i < scheduleList.size(); i++) {
+                            if (i != scheduleList.size() - 1) {
+                                infoStr = infoStr + scheduleList.get(i) + ", ";
                             } else {
-                                infoStr = infoStr + scheduleMap.get(time) + "\n";
+                                infoStr = infoStr + scheduleList.get(i) + "\n";
                             }
                         }
+
                         infoStr = infoStr + "Usage: ";
                         List<String> usageList = medInfo.getUsages();
                         for (int i = 0; i < usageList.size(); i++) {

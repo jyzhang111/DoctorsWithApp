@@ -1126,27 +1126,33 @@ app.use('/apiPatient', (req, res) => {
 });
 
 app.use('/apiViewMedications', (req, res) => {
-
-	var searchName = req.query.name;
-	var medPatientName = req.query.patientName;
+	console.log("Looking for medicine");
+	var queryObject = {};
+	if (req.query.patientName) {
+		queryObject = { "patientName" : req.query.patientName };
+	}
+	// var searchName = req.query.name;
+	// var medPatientName = req.query.patientName;
 	
-	Doctor.findOne( {name: searchName}, (err, doctor) => { 
-		if (err) {
-		    res.type('html').status(200);
-		    res.write('uh oh 1: ' + err);
-		    console.log(err);
-		    res.end();
-		}
-		else if (!doctor){
-		    res.type('html').status(200);
-		    res.send("No doctor named " + searchName);
-		}
-		else if(!doctor.patientArray.includes(medPatientName)){
-			res.type('html').status(200);
-		    	res.send("You are not  monitoring patient: " + medPatientName);
-		}
-		else {
-			Medicine.find( {patientName: medPatientName}, (err, medicines) => { 
+	// Doctor.findOne( {name: searchName}, (err, doctor) => { 
+		// if (err) {
+		//     res.type('html').status(200);
+		//     res.write('uh oh 1: ' + err);
+		//     console.log(err);
+		//     res.end();
+		// }
+		// else if (!doctor){
+		//     res.type('html').status(200);
+		//     res.send("No doctor named " + searchName);
+		// }
+		// else if(!doctor.patientArray.includes(medPatientName)){
+		// 	res.type('html').status(200);
+		//     	res.send("You are not  monitoring patient: " + medPatientName);
+		// }
+		// else {
+
+
+			Medicine.find( queryObject, (err, medicines) => { 
 		if (err) {
 			res.type('html').status(200);
 			res.write('uh oh 2: ' + err);
@@ -1156,21 +1162,21 @@ app.use('/apiViewMedications', (req, res) => {
 			res.json({});
 		} else if (medicines.length == 1) {
 			var medicine = medicines[0];
-			res.json( { "sideEffect" : medicine.sideEffect, "count" : medicine.count,
+			res.json( { "name" : medicine.name, "patientName" : medicine.patientName,
+						"sideEffect" : medicine.sideEffect, "count" : medicine.count,
 					   "timeToTake" : medicine.timeToTake, "timePerDay" : medicine.timePerDay,
 					   "reason" : medicine.reason, "color" : medicine.color,
 					   "isPastPill" : medicine.isPastPill }	);
 		} else {
 			var returnArray = [];
 			medicines.forEach( (medicine) => {
-				returnArray.push( { "sideEffect" : medicine.sideEffect, "count" : medicine.count,
+				returnArray.push( { "name" : medicine.name, "patientName" : medicine.patientName,
+									"sideEffect" : medicine.sideEffect, "count" : medicine.count,
 					   				"timeToTake" : medicine.timeToTake, "timePerDay" : medicine.timePerDay,
 					   				"reason" : medicine.reason, "color" : medicine.color,
 					   				"isPastPill" : medicine.isPastPill } );
 			});
 			res.json(returnArray); 
-		}
-	});
 		}
 	});
 });

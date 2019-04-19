@@ -48,17 +48,17 @@ public class FileMedicationReader implements MedicationReader{
             while (in.hasNext()) {
                 TreeSet<MedicationInfo> patientMedicationInfo = new TreeSet<MedicationInfo>();
 
-                String patientName = in.next();
                 String medicineName = in.next();
+                String patientName = in.next();
                 String strDosage = in.next();
                 int dosage = Integer.parseInt(strDosage);
 
-                Map<String, String> schedule = new HashMap<String, String>();
+                List<String> schedule = new ArrayList<String>();
                 String scheduleStr = in.next();
                 scheduleStr = scheduleStr.substring(1, scheduleStr.length()-1);
-                String []scheduleArray = scheduleStr.split(";");
+                String []scheduleArray = scheduleStr.split(",");
                 for(String s : scheduleArray) {
-                    schedule.put(s.split(",")[0], s.split(",")[1]);
+                    schedule.add(s);
                 }
 
                 String strNumPerDay = in.next();
@@ -84,7 +84,8 @@ public class FileMedicationReader implements MedicationReader{
                 String CurrentPill = in.next();
                 boolean isCurrentPill = Boolean.parseBoolean(CurrentPill);
                 // key = medicationTime, value = medicationInfo
-                patientMedicationInfo.add(new MedicationInfo(medicineName, dosage, numPerDay, schedule, sideEffects, usages, isCurrentPill));
+                String color = in.next();
+                patientMedicationInfo.add(new MedicationInfo(medicineName, patientName, dosage, numPerDay, schedule, sideEffects, usages, isCurrentPill, color));
 
                 String endPoint = "done";
                 String next = null;
@@ -97,20 +98,19 @@ public class FileMedicationReader implements MedicationReader{
                     if(medicineName.equals(endPoint)){
                         break;
                     }
-
+                    patientName = in.next();
                     strDosage = in.next();
                     dosage = Integer.parseInt(strDosage);
 
-                    schedule = new HashMap<String, String>();
+                    schedule = new ArrayList<String>();
                     scheduleStr = in.next();
                     scheduleStr = scheduleStr.substring(1, scheduleStr.length()-1);
                     scheduleArray = scheduleStr.split(";");
                     for(String s : scheduleArray) {
-                        schedule.put(s.split(",")[0], s.split(",")[1]);
+                        schedule.add(s);
                     }
 
                     strNumPerDay = in.next();
-
                     numPerDay = Integer.parseInt(strNumPerDay);
 
                     sideEffects = new ArrayList<String>();
@@ -121,9 +121,7 @@ public class FileMedicationReader implements MedicationReader{
                     for(String s : sideEffArray) {
                         sideEffects.add(s);
                     }
-                    strNumUsage = in.next();
                     usages = new ArrayList<String>();
-
                     strNumUsage = strNumUsage.substring(1, strNumUsage.length()-1);
                     usageArray = strNumUsage.split(",");
                     for(String s : usageArray) {
@@ -131,7 +129,10 @@ public class FileMedicationReader implements MedicationReader{
                     }
                     CurrentPill = in.next();
                     isCurrentPill = Boolean.parseBoolean(CurrentPill);
-                    patientMedicationInfo.add(new MedicationInfo(medicineName, dosage, numPerDay, schedule, sideEffects, usages, isCurrentPill));
+                    color = in.next();
+
+                    patientMedicationInfo.add(new MedicationInfo(medicineName,
+                            patientName, dosage, numPerDay, schedule, sideEffects, usages, isCurrentPill, color));
                 }
 
                 // adding patientMedication into medications
@@ -171,14 +172,14 @@ public class FileMedicationReader implements MedicationReader{
                 //looping each medication for one patient
                 for(MedicationInfo entry: eachPatient.getValue()){
 
-                    Map<String, String> scheduleMap = entry.getSchedule();
+                    List<String> scheduleList = entry.getSchedule();
                     String docStringOne = "[";
                     int counterOne = 0;
-                    for (String schedule : scheduleMap.keySet()) {
-                        if (counterOne != scheduleMap.keySet().size() - 1) {
-                            docStringOne = docStringOne + schedule + "," + scheduleMap.get(schedule) + ";";
+                    for (String schedule : scheduleList) {
+                        if (counterOne != scheduleList.size() - 1) {
+                            docStringOne = docStringOne + schedule + ", ";
                         } else {
-                            docStringOne = docStringOne + schedule + "," + scheduleMap.get(schedule);
+                            docStringOne = docStringOne + schedule;
                         }
                         counterOne++;
                     }
@@ -214,7 +215,7 @@ public class FileMedicationReader implements MedicationReader{
                     docStringThree = docStringThree + "]";
 
 
-                    writer.println(patientName + "\t" + entry.getName() + "\t" + entry.getDosage() + "\t"
+                    writer.println(entry.getName() + "\t" + patientName + "\t" + entry.getDosage() + "\t"
                             + docStringOne + "\t" + entry.getNumPerDay() + "\t"
                             + docStringTwo + "\t" + docStringThree + "\t" + entry.getPillStatus());
                 }

@@ -8,18 +8,20 @@ import java.util.TreeMap;
 
 public class MedicationInfo implements Comparable<MedicationInfo>{
     private String name;
+    private String patientName;
     private int dosage;
-    private Map<String, String> schedule;
+    private List<String> schedule;
     private int numPerDay;
     private List<String> sideEffects;
     private List<String> usages;
     private Boolean isCurrentPill;
+    private String color;
 
     // Fake data
 //    public MedicationInfo(){
 //        this.name = "Test Pill";
 //        this.dosage = 5;
-//        Map<String, String> schedule = new TreeMap<String, String>();
+//        List<String> schedule = new ArrayList<String>();
 //        schedule.put("1", "9:00");
 //        this.schedule = schedule;
 //        this.numPerDay = 3;
@@ -31,14 +33,17 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
 //        this.usages = usages;
 //        this.isCurrentPill = true;
 //    }
-    public MedicationInfo(String name, int dosage, int numPerDay, Map<String, String> schedule, List<String> sideEffects, List<String> usages, Boolean isCurrentPill) {
+    public MedicationInfo(String name, String patientName, int dosage, int numPerDay,
+                          List<String> schedule, List<String> sideEffects, List<String> usages, Boolean isCurrentPill, String color) {
         this.name = name;
+        this.patientName = patientName;
         this.dosage = dosage;
         this.numPerDay = numPerDay;
         this.schedule = schedule;
         this.sideEffects = sideEffects;
         this.usages = usages;
         this.isCurrentPill = isCurrentPill;
+        this.color = color;
     }
 
     public String getName() {
@@ -53,18 +58,21 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
     public void changeDosage(int newDosage) {
         dosage = newDosage;
     }
-    public void addScehdule(String timePeriod, String time) {
-        schedule.put(timePeriod, time);
+    public void addScehdule(String time) {
+        schedule.add(time);
         numPerDay++;
+    }
+    public String getPatientName() {
+        return patientName;
     }
     public int getNumPerDay() {
         return numPerDay;
     }
-    public Map<String, String> getSchedule() {
+    public List<String> getSchedule() {
         return schedule;
     }
-    public void removeSchedule(String timePeriod, String time) {
-        schedule.remove(timePeriod, time);
+    public void removeSchedule(String time) {
+        schedule.remove(time);
     }
     public void addSideEffect(String sideEffect) {
         sideEffects.add(sideEffect);
@@ -92,6 +100,9 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
     }
     public boolean getPillStatus() {
         return isCurrentPill;
+    }
+    public String getColor() {
+        return color;
     }
 
     @Override
