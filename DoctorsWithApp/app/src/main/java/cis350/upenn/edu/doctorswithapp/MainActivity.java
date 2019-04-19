@@ -11,6 +11,7 @@ import android.util.Log;
 
 import cis350.upenn.edu.doctorswithapp.processor.Processor;
 import cis350.upenn.edu.doctorswithapp.processor.FileProcessor;
+import cis350.upenn.edu.doctorswithapp.processor.WebProcessor;
 
 public class MainActivity extends AppCompatActivity {
     public static Processor processor;
