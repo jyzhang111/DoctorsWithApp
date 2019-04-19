@@ -50,8 +50,8 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
                     String name = jo.getString("name");
                     sb.append(name + "\t");
 
-                    String password = jo.getString("docPassword");
-                    sb.append(password + "\t");
+//                    String password = jo.getString("docPassword");
+//                    sb.append(password + "\t");
 
                     sb.append("[");
                     JSONArray patientArray = jo.getJSONArray("patArray");

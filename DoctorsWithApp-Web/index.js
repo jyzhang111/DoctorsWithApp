@@ -1119,8 +1119,8 @@ app.use('/apiPatient', (req, res) => {
 						"password": person.password, "age": person.age, "gender": person.gender, 
 						"insComp": person.insuranceCompany, "insNum": person.insuranceNumber,
 						"allergies": person.allergies, "pastSurg": person.pastSurgeries});
-			res.json(returnArray);
 			});
+			res.json(returnArray);
 		}
 	});
 });
@@ -1167,7 +1167,7 @@ app.use('/apiViewMedications', (req, res) => {
 					   				"timeToTake" : medicine.timeToTake, "timePerDay" : medicine.timePerDay,
 					   				"reason" : medicine.reason, "color" : medicine.color,
 					   				"isPastPill" : medicine.isPastPill } );
-			})
+			});
 			res.json(returnArray); 
 		}
 	});
