@@ -1115,9 +1115,12 @@ app.use('/apiPatient', (req, res) => {
 		} else {
 			var returnArray = [];
 			persons.forEach((person) => { 
-				returnArray.push( {"name": person.name, "doctorArray" : person.doctorArray});
-			});
+				returnArray.push( {"name": person.name, "doctorArray" : person.doctorArray,"username": person.username, 
+						"password": person.password, "age": person.age, "gender": person.gender, 
+						"insComp": person.insuranceCompany, "insNum": person.insuranceNumber,
+						"allergies": person.allergies, "pastSurg": person.pastSurgeries});
 			res.json(returnArray);
+			});
 		}
 	});
 });
