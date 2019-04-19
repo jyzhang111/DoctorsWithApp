@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-        processor = new FileProcessor();
+        //processor = new FileProcessor();
+        processor = new WebProcessor();
+
     }
 
     public void onLoginButtonClick(View view){

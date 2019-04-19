@@ -95,6 +95,7 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
             DoctorWebTask task = this;
             task.execute(url);
             largeDoctorString = task.get();
+            Log.v("doc string",largeDoctorString);
         }
         catch (Exception e) {
             return null;
