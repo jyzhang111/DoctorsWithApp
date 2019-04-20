@@ -41,11 +41,12 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
                 conn.connect();
                 // read first line of data that is returned
                 Scanner in = new Scanner(url.openStream());
-                String msg = in.nextLine();
-                // use Android JSON library to parse JSON
-                JSONArray arr = new JSONArray(msg);
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject jo = arr.getJSONObject(i);
+                String msg = in.nextLine().trim();
+
+                if(msg.length() == 0) return "";
+
+                if(msg.charAt(0) == '{'){
+                    JSONObject jo = new JSONObject(msg);
                     // assumes that JSON object contains a "name" field
                     String name = jo.getString("name");
                     sb.append(name + "\t");
@@ -59,6 +60,26 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
                         sb.append(patientArray.optString(j) + ",");
                     }
                     sb.append("]\n");
+                }
+                else {
+                    // use Android JSON library to parse JSON
+                    JSONArray arr = new JSONArray(msg);
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject jo = arr.getJSONObject(i);
+                        // assumes that JSON object contains a "name" field
+                        String name = jo.getString("name");
+                        sb.append(name + "\t");
+
+//                    String password = jo.getString("docPassword");
+//                    sb.append(password + "\t");
+
+                        sb.append("[");
+                        JSONArray patientArray = jo.getJSONArray("patArray");
+                        for (int j = 0; j < patientArray.length(); j++) {
+                            sb.append(patientArray.optString(j) + ",");
+                        }
+                        sb.append("]\n");
+                    }
                 }
 
             } catch (Exception e) {

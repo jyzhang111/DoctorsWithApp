@@ -45,13 +45,13 @@ public class PatientWebTask extends AsyncTask<URL, String, String> implements Pa
                 conn.connect();
                 // read first line of data that is returned
                 Scanner in = new Scanner(url.openStream());
-                String msg = in.nextLine();
-                // use Android JSON library to parse JSON
-                JSONArray arr = new JSONArray(msg);
 
+                String msg = in.nextLine().trim();
 
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject jo = arr.getJSONObject(i);
+                if(msg.length() == 0) return "";
+
+                if(msg.charAt(0) == '{'){
+                    JSONObject jo = new JSONObject(msg);
                     // assumes that JSON object contains a "name" field
                     String username = jo.getString("username");
                     sb.append(username + "\t");
@@ -86,6 +86,49 @@ public class PatientWebTask extends AsyncTask<URL, String, String> implements Pa
 
                     String pastSurgeries = jo.getString("pastSurg");
                     sb.append(pastSurgeries + "\n");
+                }
+                else {
+                    // use Android JSON library to parse JSON
+                    JSONArray arr = new JSONArray(msg);
+
+
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject jo = arr.getJSONObject(i);
+                        // assumes that JSON object contains a "name" field
+                        String username = jo.getString("username");
+                        sb.append(username + "\t");
+
+                        String password = jo.getString("password");
+                        sb.append(password + "\t");
+
+                        String name = jo.getString("name");
+                        sb.append(name + "\t");
+
+                        int age = jo.getInt("age");
+                        sb.append(age + "\t");
+
+                        String gender = jo.getString("gender");
+                        sb.append(gender + "\t");
+
+                        sb.append("[");
+                        JSONArray docArray = jo.getJSONArray("doctorArray");
+                        for (int j = 0; j < docArray.length(); j++) {
+                            sb.append(docArray.optString(j) + ",");
+                        }
+                        sb.append("]\t");
+
+                        String insuranceComp = jo.getString("insComp");
+                        sb.append(insuranceComp + "\t");
+
+                        String insuranceNumber = jo.getString("insNum");
+                        sb.append(insuranceNumber + "\t");
+
+                        String aller = jo.getString("allergies");
+                        sb.append(aller + "\t");
+
+                        String pastSurgeries = jo.getString("pastSurg");
+                        sb.append(pastSurgeries + "\n");
+                    }
                 }
             } catch (Exception e) {
                 return e.toString();
