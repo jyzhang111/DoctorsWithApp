@@ -58,9 +58,15 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
             public void onClick(View v) {
                 int counter = 1;
                 String patientName = HomePageActivity.patientName;
+
+                if (medications == null || medications.size() == 0) {
+                    TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
+                    pillNumber.setText("Could not find any pills for patient: " + patientName);
+                }
+
                 TreeSet<MedicationInfo> patientMedInfo = medications.get(patientName);
 
-                if(patientMedInfo == null || patientMedInfo.size() == 0){
+                if (patientMedInfo == null || patientMedInfo.size() == 0){
                     TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
                     pillNumber.setText("Could not find any pills for patient: " + patientName);
 
