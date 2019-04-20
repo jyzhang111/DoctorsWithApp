@@ -224,6 +224,7 @@ public class MedicationWebTask extends AsyncTask<URL, String, String> implements
         finally{
             in.close();
         }
+
         return medicationMap;
 
     }
