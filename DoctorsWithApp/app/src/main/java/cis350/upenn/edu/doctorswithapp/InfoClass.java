@@ -44,9 +44,12 @@ public class InfoClass extends AppCompatActivity {
         String patientName = patient.getName();
         List<Doctor> doctors = patient.getDoctors();
         String docString = "";
-        for (Doctor currDoc: doctors) {
-            docString += currDoc.getName();
+        for (Doctor currDoc : doctors) {
+            if (currDoc != null) {
+                docString += currDoc.getName() + "/";
+            }
         }
+
 
 
         userName.setText("USERNAME: " + data);
