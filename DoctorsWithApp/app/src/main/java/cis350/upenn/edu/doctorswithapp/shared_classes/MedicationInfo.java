@@ -14,7 +14,7 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
     private int numPerDay;
     private List<String> sideEffects;
     private List<String> usages;
-    private Boolean isCurrentPill;
+    private Boolean isPastPill;
     private String color;
 
     // Fake data
@@ -34,7 +34,7 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
 //        this.isCurrentPill = true;
 //    }
     public MedicationInfo(String name, String patientName, int dosage, int numPerDay,
-                          List<String> schedule, List<String> sideEffects, List<String> usages, Boolean isCurrentPill, String color) {
+                          List<String> schedule, List<String> sideEffects, List<String> usages, Boolean isPastPill, String color) {
         this.name = name;
         this.patientName = patientName;
         this.dosage = dosage;
@@ -42,7 +42,7 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
         this.schedule = schedule;
         this.sideEffects = sideEffects;
         this.usages = usages;
-        this.isCurrentPill = isCurrentPill;
+        this.isPastPill = isPastPill;
         this.color = color;
     }
 
@@ -93,13 +93,13 @@ public class MedicationInfo implements Comparable<MedicationInfo>{
         return usages;
     }
     public void setPillStatus() {
-        if(isCurrentPill) {
-            this.isCurrentPill = false;
+        if(isPastPill) {
+            this.isPastPill = true;
         }
-        this.isCurrentPill = true;
+        this.isPastPill = false;
     }
     public boolean getPillStatus() {
-        return isCurrentPill;
+        return isPastPill;
     }
     public String getColor() {
         return color;
