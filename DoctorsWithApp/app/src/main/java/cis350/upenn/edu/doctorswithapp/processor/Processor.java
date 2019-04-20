@@ -25,7 +25,7 @@ public abstract class Processor {
     public Processor(){
         dr = createDoctorReader();
         pr = createPatientReader();
-        med = new MedicationWebTask();
+        med = createMedicationReader();
         patients = pr.getPatients();
         doctors = dr.getDoctors();
 //        medications = med.getMedications();

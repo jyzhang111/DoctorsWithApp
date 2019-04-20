@@ -1,25 +1,13 @@
 package cis350.upenn.edu.doctorswithapp.data;
-import cis350.upenn.edu.doctorswithapp.MainActivity;
-import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.util.Scanner;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.util.List;
-import java.util.ArrayList;
-
-public class DoctorWebTask extends AsyncTask<URL, String, String> implements DoctorReader {
-    private boolean getD;
-
+public class DoctorWebTask extends AsyncTask<URL, String, String> {
     /*
     This method is called in background when this object's "execute"
     method is invoked.
@@ -27,14 +15,11 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
     */
     protected String doInBackground(URL... urls) {
         StringBuilder sb = new StringBuilder();
+        URL url = urls[0];
 
-        if(getD) {
+        if(url.toString().equals("http://10.0.2.2:3000/apiDoctor")) {
 
             try {
-
-                // get the first URL from the array
-                URL url = urls[0];
-                // create connection and send HTTP request
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -88,9 +73,6 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
         }
         else{
             try {
-                //sample code for what to do when we want to post data, when getD is false
-
-                URL url = urls[0];
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -102,48 +84,5 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> implements Doc
         }
 
         return sb.toString();
-    }
-
-    public List<Doctor> getDoctors(){
-        List<Doctor> doctors = new ArrayList<Doctor>();
-
-        getD = true;
-
-        String largeDoctorString;
-
-        try {
-            URL url = new URL("http://10.0.2.2:3000/apiDoctor");
-            DoctorWebTask task = this;
-            task.execute(url);
-            largeDoctorString = task.get();
-            Log.v("doc string",largeDoctorString);
-        }
-        catch (Exception e) {
-            return null;
-        }
-
-        Scanner in = null;
-        try{
-            in = new Scanner(largeDoctorString);
-            in.useDelimiter("\t|\n");
-            while(in.hasNext()){
-                String name = in.next();
-                String patArrayString = in.next();
-                in.nextLine();
-
-                patArrayString = patArrayString.substring(1, patArrayString.length()-1);
-                String[] patNames = patArrayString.split(",");
-
-                Doctor temp = new Doctor(name, patNames);
-                doctors.add(temp);
-            }
-        }
-        catch(Exception e){
-            throw new IllegalStateException(e);
-        }
-        finally{
-            in.close();
-        }
-        return doctors;
     }
 }

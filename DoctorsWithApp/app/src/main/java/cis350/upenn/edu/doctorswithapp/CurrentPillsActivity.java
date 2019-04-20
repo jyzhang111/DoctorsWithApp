@@ -119,6 +119,10 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                         counter = counter + 1;
                     }
 
+                    if(infoStr.equals("")){
+                        infoStr = "All pills for current patient are past.";
+                    }
+
                     TextView pillInformation = (TextView) findViewById(R.id.pillInfo);
                     pillInformation.setText(infoStr);
 

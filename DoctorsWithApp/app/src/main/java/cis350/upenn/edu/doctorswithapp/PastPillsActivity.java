@@ -37,7 +37,7 @@ public class PastPillsActivity extends AppCompatActivity {
                     String content = patientName + ":";
                     for (MedicationInfo eachMedication : patientMedicationInfo) {
 
-                        if (!eachMedication.getPillStatus()) {
+                        if (eachMedication.getPillStatus()) {
                             content += eachMedication.getName();
                             content += "\n";
                         }

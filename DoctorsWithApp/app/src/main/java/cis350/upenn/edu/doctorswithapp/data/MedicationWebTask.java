@@ -1,29 +1,14 @@
 package cis350.upenn.edu.doctorswithapp.data;
-import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
-import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
 
 import java.net.URL;
 import java.net.HttpURLConnection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import android.os.AsyncTask;
-import java.util.TreeSet;
-import android.util.Log;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
-import java.sql.SQLException;
 import org.json.JSONException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.TreeSet;
 
-public class MedicationWebTask extends AsyncTask<URL, String, String> implements MedicationReader{
-    private boolean getD;
+public class MedicationWebTask extends AsyncTask<URL, String, String>{
 
     public MedicationWebTask(){
     }
@@ -35,14 +20,12 @@ public class MedicationWebTask extends AsyncTask<URL, String, String> implements
     */
     protected String doInBackground(URL... urls) {
         StringBuilder sb = new StringBuilder();
+        URL url = urls[0];
 
-        if(getD) {
+        if(url.toString().equals("http://10.0.2.2:3000/apiViewMedications")) {
 
             try {
 
-                // get the first URL from the array
-                URL url = urls[0];
-                // create connection and send HTTP request
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -148,7 +131,6 @@ public class MedicationWebTask extends AsyncTask<URL, String, String> implements
             try {
                 //sample code for what to do when we want to post data, when getD is false
 
-                URL url = urls[0];
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -169,110 +151,4 @@ public class MedicationWebTask extends AsyncTask<URL, String, String> implements
     protected void onPostExecute(String msg) {
         // not implemented but you can use this if you’d like
     }
-
-    public Map<String, TreeSet<MedicationInfo>> getMedications() {
-
-        Map<String, TreeSet<MedicationInfo>> medicationMap = new HashMap<>();
-
-        getD = true;
-
-        String largeMedicationString;
-
-        try {
-            URL url = new URL("http://10.0.2.2:3000/apiViewMedications");
-            MedicationWebTask task = this;
-            task.execute(url);
-            largeMedicationString = task.get();
-            Log.v("med string",largeMedicationString);
-        }
-        catch (Exception e) {
-            return null;
-        }
-
-        Scanner in = null;
-        try{
-            in = new Scanner(largeMedicationString);
-            in.useDelimiter("\t|\n");
-            while(in.hasNext()){
-                String name = in.next();
-                Log.v("name", name);
-
-                String patientName = in.next();
-                Log.v("patientName", patientName);
-
-                String sideEffect = in.next();
-                Log.v("sideEffect", sideEffect);
-
-                List<String> effect = new ArrayList<String>();
-
-                String[] effectComponents = sideEffect.split(", ");
-                for (int i = 0; i < effectComponents.length; i++) {
-                    effect.add(effectComponents[i]);
-                }
-                String countStr = in.next();
-                Log.v("countStr", countStr);
-
-                int count = Integer.parseInt(countStr);
-
-                String timeToTake = in.next();
-                Log.v("timeToTake", timeToTake);
-
-                List<String> schedule = new ArrayList<String>();
-                String[] scheduleComponents = timeToTake.split(", ");
-                for (int i = 0; i < scheduleComponents.length; i++) {
-                    schedule.add(scheduleComponents[i]);
-                }
-                String timePerDayStr = in.next();
-                Log.v("timePerDayStr", timePerDayStr);
-
-
-                int timePerDay = Integer.parseInt(timePerDayStr);
-                String reason = in.next();
-                Log.v("reason", reason);
-
-                List<String> usage = new ArrayList<String>();
-
-                String[] usageComponents = reason.split(", ");
-                for (int i = 0; i < usageComponents.length; i++) {
-                    usage.add(usageComponents[i]);
-                }
-                String color = in.next();
-                Log.v("color", color);
-
-
-                String isPastPillStr = in.next();
-                // Log.v("isPastPillStr", isPastPillStr);
-
-                Boolean isPastPill = Boolean.parseBoolean(isPastPillStr);
-
-//                boolean isPastPill = false;
-//                if (isPastPillStr.equals("true")) {
-//                    isPastPill = true;
-//                }
-                MedicationInfo medication = new MedicationInfo(name, patientName, count, timePerDay, schedule, effect,
-                        usage, isPastPill, color);
-
-                if (!medicationMap.containsKey(patientName)) {
-                    TreeSet<MedicationInfo> medSet = new TreeSet<MedicationInfo>();
-                    medSet.add(medication);
-                    medicationMap.put(patientName, medSet);
-                } else {
-                    TreeSet<MedicationInfo> originalSet = medicationMap.get(patientName);
-                    originalSet.add(medication);
-                }
-
-            }
-        }
-        catch(Exception e){
-            throw new IllegalStateException(e);
-        }
-        finally{
-            in.close();
-        }
-
-        return medicationMap;
-
-    }
-
-    public void put(String name, MedicationInfo med){}
 }

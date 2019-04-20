@@ -14,7 +14,7 @@ import cis350.upenn.edu.doctorswithapp.processor.FileProcessor;
 import cis350.upenn.edu.doctorswithapp.processor.WebProcessor;
 
 public class MainActivity extends AppCompatActivity {
-    public static Processor processor;
+    public static Processor processor = new WebProcessor();
     public static Context context;
     public static final int HomePageActivity_ID = 1;
     public static final int CreateAccountActivity_ID = 2;
@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
-
-        //processor = new FileProcessor();
-        processor = new WebProcessor();
 
     }
 

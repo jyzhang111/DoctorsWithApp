@@ -1,25 +1,15 @@
 package cis350.upenn.edu.doctorswithapp.data;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
-import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
-import cis350.upenn.edu.doctorswithapp.shared_classes.PatientInfo;
-
-public class PatientWebTask extends AsyncTask<URL, String, String> implements PatientReader {
-    private boolean getD;
+public class PatientWebTask extends AsyncTask<URL, String, String>{
 
 
     public PatientWebTask(){
@@ -33,12 +23,10 @@ public class PatientWebTask extends AsyncTask<URL, String, String> implements Pa
     */
     protected String doInBackground(URL... urls) {
         StringBuilder sb = new StringBuilder();
+        URL url = urls[0];
 
-        if(getD) {
+        if(url.toString().equals("http://10.0.2.2:3000/apiPatient")) {
             try {
-                // get the first URL from the array
-                URL url = urls[0];
-                // create connection and send HTTP request
                 HttpURLConnection conn =
                         (HttpURLConnection)url.openConnection();
                 conn.setRequestMethod("GET");
@@ -136,9 +124,6 @@ public class PatientWebTask extends AsyncTask<URL, String, String> implements Pa
         }
         else{
             try {
-                //sample code for what to do when we want to post data, when getD is false
-
-                URL url = urls[0];
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -158,86 +143,5 @@ public class PatientWebTask extends AsyncTask<URL, String, String> implements Pa
     */
     protected void onPostExecute(String msg) {
         // not implemented but you can use this if you’d like
-    }
-
-    @Override
-    public Map<String, PatientInfo> getPatients() {
-        Map<String, PatientInfo> patients = new TreeMap<String, PatientInfo>();
-
-        getD = true;
-        String largePatientString;
-        try {
-            URL url = new URL("http://10.0.2.2:3000/apiPatient");
-            PatientWebTask task = this;
-            task.execute(url);
-            largePatientString = task.get();
-        }
-        catch (Exception e) {
-            return null;
-        }
-
-        Scanner in = null;
-        try{
-            in = new Scanner(largePatientString);
-            in.useDelimiter("\t|\n");
-            while(in.hasNext()){
-                String username = in.next();
-                Log.v("username", username);
-                String password = in.next();
-                Log.v("password", password);
-
-                String name = in.next();
-                Log.v("name", name);
-
-                int age = Integer.parseInt(in.next());
-                Log.v("age", age + "");
-
-                String gender = in.next();
-                Log.v("gender", gender);
-
-                String ds = in.next();
-                Log.v("doctors", ds);
-
-                String[] docs = ds.split("[\\[\\],]");
-                Doctor doctor = null;
-                if(docs.length != 0){
-                    doctor = new Doctor(docs[0], new String[0]);
-                }
-
-                String insComp = in.next();
-                Log.v("insuranceComp", insComp);
-
-                String insNum = in.next();
-                Log.v("insuranceNum", insNum);
-
-                String allergies = in.next();
-                Log.v("allergies", allergies);
-
-                String pastSurg = in.next();
-                Log.v("pastSurgeries", pastSurg);
-
-
-                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg);
-                for(int i =1; i <docs.length; i++) {
-                    pi.addDoctor(new Doctor(docs[i], new String[0]));
-
-                }
-                patients.put(username, pi);
-            }
-        }
-        catch(Exception e){
-            Log.v("here", e.toString());
-        }
-        finally{
-            if(in != null) {
-                in.close();
-            }
-        }
-        return patients;
-    }
-
-    @Override
-    public void put(String user, PatientInfo pi) {
-
     }
 }

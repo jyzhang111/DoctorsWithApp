@@ -8,19 +8,22 @@ import cis350.upenn.edu.doctorswithapp.data.MedicationReader;
 import cis350.upenn.edu.doctorswithapp.data.MedicationWebTask;
 import cis350.upenn.edu.doctorswithapp.data.PatientReader;
 import cis350.upenn.edu.doctorswithapp.data.PatientWebTask;
+import cis350.upenn.edu.doctorswithapp.data.WebDoctorReader;
+import cis350.upenn.edu.doctorswithapp.data.WebMedicationReader;
+import cis350.upenn.edu.doctorswithapp.data.WebPatientReader;
 
 public class WebProcessor extends Processor {
     public WebProcessor(){
         super();
     }
 
-    protected DoctorReader createDoctorReader(){ return new DoctorWebTask(); }
+    protected DoctorReader createDoctorReader(){ return new WebDoctorReader(); }
 
     protected PatientReader createPatientReader(){
-        return new PatientWebTask();
+        return new WebPatientReader();
     }
 
     protected MedicationReader createMedicationReader() {
-        return new MedicationWebTask();
+        return new WebMedicationReader();
     }
 }
