@@ -6,6 +6,8 @@ import cis350.upenn.edu.doctorswithapp.data.MedicationReader;
 import cis350.upenn.edu.doctorswithapp.shared_classes.PatientInfo;
 import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
 import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
+import cis350.upenn.edu.doctorswithapp.data.MedicationWebTask;
+
 
 import java.util.List;
 import java.util.Map;
@@ -17,16 +19,16 @@ public abstract class Processor {
     private MedicationReader med;
     private Map<String, PatientInfo> patients;
     private List<Doctor> doctors;
-    private Map<String, TreeSet<MedicationInfo>> medications;
+//    private Map<String, TreeSet<MedicationInfo>> medications;
 
 
     public Processor(){
         dr = createDoctorReader();
         pr = createPatientReader();
-        med = createMedicationReader();
+        med = new MedicationWebTask();
         patients = pr.getPatients();
         doctors = dr.getDoctors();
-        medications = med.getMedications();
+//        medications = med.getMedications();
     }
 
     public boolean usernameTaken(String user){
