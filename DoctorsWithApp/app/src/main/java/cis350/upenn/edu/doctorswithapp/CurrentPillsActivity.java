@@ -60,21 +60,25 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                 String patientName = HomePageActivity.patientName;
                 TreeSet<MedicationInfo> patientMedInfo = medications.get(patientName);
 
-                if(patientMedInfo == null){
+                if(patientMedInfo == null || patientMedInfo.size() == 0){
                     TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
                     pillNumber.setText("Could not find any pills for patient: " + patientName);
+
                 }
                 else {
                     String infoStr = "";
 
                     for (MedicationInfo medInfo : patientMedInfo) {
-                        if(!medInfo.getPillStatus()){
+                        if(medInfo.getPillStatus()){
                             continue;
                         }
-                        infoStr = infoStr + "Pill number: " + counter + "\n";
-                        infoStr = infoStr + "Name of pill " + medInfo.getName() + "\n";
-                        infoStr = infoStr + "Dosage: " + medInfo.getDosage() + "\n";
-                        infoStr = infoStr + "Number of times to take pills in a day: " + medInfo.getNumPerDay() + "\n";
+
+                        infoStr = infoStr + "Pill number:   " + counter + "\n";
+                        infoStr = infoStr + "Name of pill:   " + medInfo.getName() + "\n";
+                        infoStr = infoStr + "Dosage:   " + medInfo.getDosage() + "\n";
+                        infoStr = infoStr + "Number of times to take pills in a day:   " + medInfo.getNumPerDay() + "\n";
+
+                        infoStr = infoStr + "Schedule:   ";
                         List<String> scheduleList = medInfo.getSchedule();
                         for (int i = 0; i < scheduleList.size(); i++) {
                             if (i != scheduleList.size() - 1) {
@@ -84,7 +88,7 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                             }
                         }
 
-                        infoStr = infoStr + "Usage: ";
+                        infoStr = infoStr + "Usage:   ";
                         List<String> usageList = medInfo.getUsages();
                         for (int i = 0; i < usageList.size(); i++) {
                             if (i != usageList.size() - 1) {
@@ -93,7 +97,7 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                                 infoStr = infoStr + usageList.get(i) + "\n";
                             }
                         }
-                        infoStr = infoStr + "Side effect: ";
+                        infoStr = infoStr + "Side effect:   ";
                         List<String> sideEffectList = medInfo.getSideEffectList();
                         for (int i = 0; i < sideEffectList.size(); i++) {
                             if (i != sideEffectList.size() - 1) {
@@ -103,8 +107,9 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
                             }
                         }
 
-                        infoStr = infoStr + "\n";
+                        infoStr = infoStr + "Color: " + medInfo.getColor() + "\n";
 
+                        infoStr = infoStr + "\n";
                         counter = counter + 1;
                     }
 
