@@ -678,7 +678,7 @@ app.use('/createPatient2', (req, res) => {
 	var error = "";
 	var patientNameArray = [];
 	var patientNumArray = [];
-	//var phoneNum = req.body.phoneNum;
+	var phoneNum = req.body.phoneNum;
 	//console.log(phoneNum);
 	Patient.find({}, (err, allPatients) => {
 		if (err) { 
