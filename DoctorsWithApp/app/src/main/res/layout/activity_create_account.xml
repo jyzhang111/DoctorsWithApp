@@ -295,6 +295,26 @@
                     android:ems="13" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Phone Number:" />
+
+                <EditText
+                    android:id="@+id/phoneNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12sp"
+                    android:ems="13" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

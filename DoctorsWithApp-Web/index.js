@@ -313,6 +313,57 @@ app.use('/viewChange', (req, res) =>{
 	});
 });
 
+app.use('/sendMessage', (req, res) => {
+	var searchName = req.query.name;
+	Doctor.findOne({name: searchName}, (err, doctor) => { 
+		if (err) {
+		    res.type('html').status(200);
+		    res.write('uh oh: ' + err);
+		    console.log(err);
+		    res.end();
+		}
+		else if (!doctor){
+		    res.type('html').status(200);
+		    res.send("No doctor named " + searchName);
+		}
+		else{
+			var patientArr = doctor.patientArray;
+			res.render('wenjie4', {patients : patientArr, doctorName : searchName});
+		}
+	});
+});
+
+app.use('/sendMessage2', (req, res)=>{
+	var searchNumber = req.body.phoneNum;
+	var doctorName = req.query.name;
+	var content = req.body.content;
+	Patient.findOne({phoneNum:searchNumber}, (err, patient) =>{
+		if(err){
+			res.type('html').status(200);
+			res.write("uh oh: " + err);
+			res.end();
+		}
+		else if(!patient){
+			res.type('html').status(200);
+			res.send('No patient number is ' + searchNumber);
+		}
+		else{
+			const accountSid = 'ACbe820095ebbf79dc1a4afc9e67b478a2';
+			const authToken = 'a8b078e721c8bbe3e5be3147e64467e7';
+			const client = require('twilio')(accountSid, authToken);
+
+		client.messages
+  			.create({
+     			body: content,
+     			from: '+12676869475',
+     			to: searchNumber
+   			})
+  			.then(message => console.log(message.sid));
+  			var additionalMessage = "Your message has been successfully sent! "
+			res.render('home', {doctorName: doctorName, additionalMessage : additionalMessage});
+		}
+	});
+});
 
 app.use('/deleteNote', (req,res)=>{
 	var doctorName = req.query.doctorName;
@@ -659,8 +710,15 @@ app.use('/createPatient2', (req, res) => {
 	var patientAllergies = req.body.allergies;
 	var patientPastSurgeries = req.body.pastSurgeries;
 	var searchName = req.query.name;
+	var phoneNum = req.body.phoneNum;
 	var patientDoctors = [searchName];
-
+	Patient.find({phoneNum:phoneNum}, (err, allPatients) =>{
+		if(allPatients.length > 1){
+			error = error + "this number has been used!\n";
+			res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
+			res.end();
+		}
+	});
 	if(error !== ""){
 		res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
 		res.end();
@@ -677,7 +735,8 @@ app.use('/createPatient2', (req, res) => {
 		insuranceCompany: patientInsuranceCompany,
 		insuranceNumber: patientInsuranceNumber,
 		allergies: patientAllergies,
-		pastSurgeries: patientPastSurgeries
+		pastSurgeries: patientPastSurgeries,
+		phoneNum: phoneNum
 	    });
 
 	newPatient.save( (err) => { 
@@ -1111,14 +1170,14 @@ app.use('/apiPatient', (req, res) => {
 			res.json( {"name" : person.name, "doctorArray" : person.doctorArray, "username": person.username, 
 						"password": person.password, "age": person.age, "gender": person.gender, 
 						"insComp": person.insuranceCompany, "insNum": person.insuranceNumber,
-						"allergies": person.allergies, "pastSurg": person.pastSurgeries});
+						"allergies": person.allergies, "pastSurg": person.pastSurgeries, "phoneNum": person.phoneNum});
 		} else {
 			var returnArray = [];
 			persons.forEach((person) => { 
 				returnArray.push( {"name": person.name, "doctorArray" : person.doctorArray,"username": person.username, 
 						"password": person.password, "age": person.age, "gender": person.gender, 
 						"insComp": person.insuranceCompany, "insNum": person.insuranceNumber,
-						"allergies": person.allergies, "pastSurg": person.pastSurgeries});
+						"allergies": person.allergies, "pastSurg": person.pastSurgeries, "phoneNum":person.phoneNum});
 			});
 			res.json(returnArray);
 		}

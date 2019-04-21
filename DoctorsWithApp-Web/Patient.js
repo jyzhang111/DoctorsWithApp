@@ -17,7 +17,8 @@ var patientSchema = new Schema({
 	insuranceNumber: String,
 	allergies: String,
 	pastSurgeries: String,
-	noteArray: [String]
+	noteArray: [String],
+	phoneNum: {type: Number, require: true}
     });
 
 // export patientSchema as a class called Patient

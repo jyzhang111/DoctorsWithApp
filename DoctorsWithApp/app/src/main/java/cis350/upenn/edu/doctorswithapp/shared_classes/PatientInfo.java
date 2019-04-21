@@ -17,9 +17,10 @@ public class PatientInfo {
     private String insuranceNumber;
     private String allergies;
     private String pastSurgeries;
+    private int phoneNum;
 
     public PatientInfo(String password, String name, int age, String gender, Doctor doctor,
-                       String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries){
+                       String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries, int phoneNum){
         this.password = password;
         this.name = name;
         this.age = age;
@@ -32,6 +33,7 @@ public class PatientInfo {
         this.insuranceNumber = insuranceNumber;
         this.allergies = allergies;
         this.pastSurgeries = pastSurgeries;
+        this.phoneNum = phoneNum;
     }
 
     public String getPassword(){
@@ -49,7 +51,7 @@ public class PatientInfo {
     public List<Doctor> getDoctors(){
         return doctors;
     }
-
+    public  int getPhoneNum(){ return  phoneNum;}
 //    public List<String> getDoctors() {
 //        try {
 //            URL url = new URL("http://10.0.2.2:3000/apiPatient?id=" + name);
@@ -91,4 +93,5 @@ public class PatientInfo {
     public void setInsNum(String insNum) { this.insuranceNumber = insNum; }
     public void addAllergy(String allerg) { this.allergies = this.allergies + allerg; }
     public void addSurgery(String surgery) { this.pastSurgeries = this.pastSurgeries + surgery; }
+    public void setPhoneNum(int phoneNum){this.phoneNum = phoneNum;}
 }

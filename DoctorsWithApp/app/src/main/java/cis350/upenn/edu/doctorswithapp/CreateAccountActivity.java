@@ -59,6 +59,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         EditText pastSurgeries = (EditText)findViewById(R.id.pastSurgery);
         String pastSurgs = insuranceComp.getText().toString();
 
+        EditText phoneNum = (EditText)findViewById(R.id.phoneNum);
+        int p = Integer.parseInt(phoneNum.getText().toString());
 
         boolean correct = true;
         if(MainActivity.processor.usernameTaken(user)){
@@ -107,7 +109,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
 
         if(correct){
-            MainActivity.processor.createNewAccount(user, pass1, n, a, g, doc, insComp, insNum, aller, pastSurgs);
+            MainActivity.processor.createNewAccount(user, pass1, n, a, g, doc, insComp, insNum, aller, pastSurgs, p);
 
             Intent i = new Intent(this, HomePageActivity.class);
             i.putExtra("USERNAME", user);

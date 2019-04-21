@@ -66,8 +66,10 @@ public class WebPatientReader implements PatientReader {
                 String pastSurg = in.next();
                 Log.v("pastSurgeries", pastSurg);
 
+                int phoneNum = Integer.parseInt(in.next());
+                Log.v("phoneNumber", phoneNum + "");
 
-                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg);
+                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg, phoneNum);
                 for(int i =1; i <docs.length; i++) {
                     pi.addDoctor(new Doctor(docs[i], new String[0]));
 

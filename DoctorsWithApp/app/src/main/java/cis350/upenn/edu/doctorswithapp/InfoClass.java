@@ -33,7 +33,7 @@ public class InfoClass extends AppCompatActivity {
         TextView doctor = (TextView) findViewById(R.id.doctor);
         TextView allergies = (TextView) findViewById(R.id.allergies);
         TextView pastSurgeries = (TextView) findViewById(R.id.pastSurgeries);
-
+        TextView phoneNum = (TextView) findViewById(R.id.phoneNum);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras != null) {
@@ -61,7 +61,7 @@ public class InfoClass extends AppCompatActivity {
         doctor.setText("DOCTOR: " + docString);
         allergies.setText("ALLERGIES: " + patient.getAllergies());
         pastSurgeries.setText("PAST SURGERIES: " + patient.getPastSurgeries());
-
+        phoneNum.setText("Patient Phone Number: "+ patient.getPhoneNum());
 
     }
 

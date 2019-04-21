@@ -73,7 +73,10 @@ public class PatientWebTask extends AsyncTask<URL, String, String>{
                     sb.append(aller + "\t");
 
                     String pastSurgeries = jo.getString("pastSurg");
-                    sb.append(pastSurgeries + "\n");
+                    sb.append(pastSurgeries + "\t");
+
+                    int phoneNum = jo.getInt("phoneNum");
+                    sb.append(phoneNum + "\n");
                 }
                 else {
                     // use Android JSON library to parse JSON
@@ -115,7 +118,10 @@ public class PatientWebTask extends AsyncTask<URL, String, String>{
                         sb.append(aller + "\t");
 
                         String pastSurgeries = jo.getString("pastSurg");
-                        sb.append(pastSurgeries + "\n");
+                        sb.append(pastSurgeries + "\t");
+
+                        int phoneNum = jo.getInt("phoneNum");
+                        sb.append(phoneNum + "\n");
                     }
                 }
             } catch (Exception e) {

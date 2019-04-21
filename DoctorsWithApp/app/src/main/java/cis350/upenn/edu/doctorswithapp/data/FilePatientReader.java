@@ -56,9 +56,10 @@ public class FilePatientReader implements PatientReader {
                 String insNum = in.next();
                 String allergies = in.next();
                 String pastSurg = in.next();
+                int phoneNum = Integer.parseInt(in.next());
                 if(in.hasNext()) in.nextLine();
 
-                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg);
+                PatientInfo pi = new PatientInfo(password, name, age, gender, doctor, insComp, insNum, allergies, pastSurg, phoneNum);
 
                 for(int i = 1; i < docs.length; i++){
                     doctor = new Doctor(docs[i], new String[0]);
@@ -116,7 +117,8 @@ public class FilePatientReader implements PatientReader {
                         + entry.getValue().getName() + "\t" + entry.getValue().getAge() + "\t"
                         + entry.getValue().getGender() + "\t" + docString + "\t"
                         + entry.getValue().getInsComp() + "\t" + entry.getValue().getInsNum() + "\t"
-                        + entry.getValue().getAllergies() + "\t"  + entry.getValue().getPastSurgeries());
+                        + entry.getValue().getAllergies() + "\t"  + entry.getValue().getPastSurgeries() + "\t"
+                        + entry.getValue().getPhoneNum());
 
 
 
