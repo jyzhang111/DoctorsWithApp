@@ -10,7 +10,7 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper.getChannel1Notification("Pill Reminder",
-                "Take your pills 15 minutes later!");
+                "Take your pills now!");
         notificationHelper.getManager().notify(1, nb.build());
     }
 }
