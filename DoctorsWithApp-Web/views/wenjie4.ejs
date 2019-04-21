@@ -6,9 +6,4 @@ Type In Patient's Phone Number: <input name = "phoneNum">
 Type In The Content You Want To Send: <input name = "content">
 <p>
 <input type = "submit" value = "submit">
-<p>
-<% for(var i = 0; i < patients.length; i++) { %>
-<a href="/sendMessage2?name=<%= doctorName %>&patientName=<%= patients[i] %>"><%= patients[i] %></a>
-<p>
-<%}%>
 </form>

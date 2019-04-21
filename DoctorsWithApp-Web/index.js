@@ -676,8 +676,10 @@ app.use('/cancelCreatePatient', (req, res) => {res.render('home', {doctorName : 
 
 app.use('/createPatient2', (req, res) => {
 	var error = "";
-	
 	var patientNameArray = [];
+	var patientNumArray = [];
+	//var phoneNum = req.body.phoneNum;
+	//console.log(phoneNum);
 	Patient.find({}, (err, allPatients) => {
 		if (err) { 
 		    res.type('html').status(500);
@@ -686,15 +688,15 @@ app.use('/createPatient2', (req, res) => {
 		}
 		else {
 		    for (var i = 0; i < allPatients.length; i++) {
-			patientNameArray.push(allPatients[i].username);
+			patientNameArray.push(allPatients[i].username);	
 		    }
 		}
 	});
-
 	var patientUsername = req.body.username;
 	if (patientNameArray.includes(patientUsername)){
 		error = error + "Username " + patientUsername + " is already taken.\n";
 	}
+
 	var patientPassword = req.body.password;
 	var patientName = req.body.name;
 	var patientAge = req.body.age;
@@ -710,15 +712,7 @@ app.use('/createPatient2', (req, res) => {
 	var patientAllergies = req.body.allergies;
 	var patientPastSurgeries = req.body.pastSurgeries;
 	var searchName = req.query.name;
-	var phoneNum = req.body.phoneNum;
 	var patientDoctors = [searchName];
-	Patient.find({phoneNum:phoneNum}, (err, allPatients) =>{
-		if(allPatients.length > 1){
-			error = error + "this number has been used!\n";
-			res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
-			res.end();
-		}
-	});
 	if(error !== ""){
 		res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
 		res.end();

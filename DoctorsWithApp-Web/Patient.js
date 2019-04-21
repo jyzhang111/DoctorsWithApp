@@ -10,7 +10,7 @@ var patientSchema = new Schema({
 	username: {type: String, required: true, unique: true},
 	password: {type: String, required: true},
 	name: {type: String, required: true},
-	age: {type: Number, require: true},
+	age: {type: Number, required: true},
 	gender: {type: String, enum: ["male", "female", "other"]},
 	doctorArray: [String],
 	insuranceCompany: String,
@@ -18,7 +18,7 @@ var patientSchema = new Schema({
 	allergies: String,
 	pastSurgeries: String,
 	noteArray: [String],
-	phoneNum: {type: Number, require: true}
+	phoneNum: {type: Number, required: true}
     });
 
 // export patientSchema as a class called Patient
