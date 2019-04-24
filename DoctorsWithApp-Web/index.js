@@ -673,30 +673,13 @@ app.use('/createPatient', (req, res) => {res.render('createPatient', {doctorName
 
 // route for canceling create patient page
 app.use('/cancelCreatePatient', (req, res) => {res.render('home', {doctorName : req.query.name, newAcc : false, additionalMessage : ""});});
-
+	
 app.use('/createPatient2', (req, res) => {
 	var error = "";
 	var patientNameArray = [];
 	var patientNumArray = [];
 	var phoneNum = req.body.phoneNum;
-	//console.log(phoneNum);
-	Patient.find({}, (err, allPatients) => {
-		if (err) { 
-		    res.type('html').status(500);
-		    res.send('Error: ' + err);
-		    res.end();
-		}
-		else {
-		    for (var i = 0; i < allPatients.length; i++) {
-			patientNameArray.push(allPatients[i].username);	
-		    }
-		}
-	});
 	var patientUsername = req.body.username;
-	if (patientNameArray.includes(patientUsername)){
-		error = error + "Username " + patientUsername + " is already taken.\n";
-	}
-
 	var patientPassword = req.body.password;
 	var patientName = req.body.name;
 	var patientAge = req.body.age;
@@ -735,38 +718,41 @@ app.use('/createPatient2', (req, res) => {
 
 	newPatient.save( (err) => { 
 		if (err) {
-		    res.type('html').status(200);
-		    res.write('uh oh: ' + err);
-		    console.log(err);
-		    res.end();
+		    error1 = "Username Already Exists or You Entered an Invalid Input";
+		    res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error1});
+		res.end();
 		}
-	} ); 
+	
+		else {
+			Doctor.findOne( {name: searchName}, (err, doctor) => { 
+				if (err) {
+		 		   res.type('html').status(200);
+		 		   res.write('uh oh: ' + err);
+		 		   console.log(err);
+				    res.end();
+				}
+				else if (!doctor){
+		 		   res.type('html').status(200);
+		 		   res.send("No doctor named " + searchName);
+		 		   res.end();
+				}
+				else{
+		  	  		doctor.patientArray.push(patientUsername);
+		   			 doctor.save( (err) => { 
+					if (err) { 
+						res.type('html').status(500);
+						res.send('Error: ' + err);
+					}
+		 		   });
+		  		  var additionalMessage = "Created " + patientUsername + ", to be monitored by you!";
+		  		  res.render('home', {doctorName : searchName, additionalMessage : additionalMessage});
+				}
+			});
+		}
+	});
+});	
 
-	Doctor.findOne( {name: searchName}, (err, doctor) => { 
-		if (err) {
-		    res.type('html').status(200);
-		    res.write('uh oh: ' + err);
-		    console.log(err);
-		    res.end();
-		}
-		else if (!doctor){
-		    res.type('html').status(200);
-		    res.send("No doctor named " + searchName);
-		    res.end();
-		}
-		else{
-		    doctor.patientArray.push(patientUsername);
-		    doctor.save( (err) => { 
-			if (err) { 
-				res.type('html').status(500);
-				res.send('Error: ' + err);
-			}
-		    });
-		    var additionalMessage = "Created " + patientUsername + ", to be monitored by you!";
-		    res.render('home', {doctorName : searchName, additionalMessage : additionalMessage});
-		}
-	} );
-} );
+
 
 app.use('/remove', (req, res) => {
 	var searchName = req.query.name;
