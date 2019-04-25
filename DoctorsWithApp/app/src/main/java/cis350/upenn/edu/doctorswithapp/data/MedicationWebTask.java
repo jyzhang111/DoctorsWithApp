@@ -36,6 +36,8 @@ public class MedicationWebTask extends AsyncTask<URL, String, String>{
 
                 if(msg.length() == 0) return "";
 
+                if(msg.equals("{}")) return "";
+
                 if(msg.charAt(0) == '{'){
                     JSONObject jo = new JSONObject(msg);
                     // assumes that JSON object contains a "name" field

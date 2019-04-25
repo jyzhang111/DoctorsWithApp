@@ -8,12 +8,23 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.List;
+import java.io.OutputStream;
+
+import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
+import cis350.upenn.edu.doctorswithapp.shared_classes.PatientInfo;
 
 public class PatientWebTask extends AsyncTask<URL, String, String>{
-
+    private String user;
+    private PatientInfo pi;
 
     public PatientWebTask(){
 
+    }
+
+    public PatientWebTask(String user, PatientInfo pi){
+        this.user = user;
+        this.pi = pi;
     }
 
     /*
@@ -133,8 +144,42 @@ public class PatientWebTask extends AsyncTask<URL, String, String>{
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                conn.connect();
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
 
+                List<Doctor> l = pi.getDoctors();
+                String[] doctorNames = new String[l.size()];
+                int i = 0;
+                for(Doctor d : l){
+                    doctorNames[i] = d.getName();
+                    i++;
+                }
+
+
+                JSONObject obj = new JSONObject();
+
+                obj.put("username", user);
+                obj.put("password", pi.getPassword());
+                obj.put("name", pi.getName());
+                obj.put("age", pi.getAge());
+                obj.put("gender", pi.getGender().toLowerCase());
+                obj.put("doctorArray", new JSONArray(doctorNames));
+                obj.put("insComp", pi.getInsComp());
+                obj.put("insNum", pi.getInsNum());
+                obj.put("allergies", pi.getAllergies());
+                obj.put("pastSurg", pi.getPastSurgeries());
+                obj.put("phoneNum", pi.getPhoneNum());
+
+                OutputStream os = conn.getOutputStream();
+                os.write(obj.toString().getBytes("UTF-8"));
+                os.close();
+
+                conn.getResponseCode();
+
+                conn.disconnect();
+
+                return "Ok";
             } catch (Exception e) {
                 return e.toString();
             }

@@ -31,6 +31,8 @@ public class WebMedicationReader implements MedicationReader {
             return null;
         }
 
+        if(largeMedicationString.equals("")) return medicationMap;
+
         Scanner in = null;
         try{
             in = new Scanner(largeMedicationString);

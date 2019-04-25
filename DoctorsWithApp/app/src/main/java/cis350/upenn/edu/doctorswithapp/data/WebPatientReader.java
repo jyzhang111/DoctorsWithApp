@@ -90,6 +90,21 @@ public class WebPatientReader implements PatientReader {
 
     @Override
     public void put(String user, PatientInfo pi) {
-
+        String largePatientString;
+        try {
+            URL url = new URL("http://10.0.2.2:3000/createPatientFromAndroid");
+            PatientWebTask task = new PatientWebTask(user, pi);
+            task.execute(url);
+            largePatientString = task.get();
+            if(largePatientString.equals("Ok")){
+                Log.v("errorMessagePut", "Works");
+            }
+            else{
+                Log.v("errorMessagePut", largePatientString);
+            }
+        }
+        catch (Exception e) {
+            Log.v("errorMessagePut", e.toString());
+        }
     }
 }

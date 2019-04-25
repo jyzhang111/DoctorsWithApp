@@ -8,6 +8,7 @@ app.set('view engine', 'ejs');
 // set up BodyParser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 // import the Doctor class from Doctor.js
 var Doctor = require('./Doctor.js');
@@ -677,8 +678,6 @@ app.use('/cancelCreatePatient', (req, res) => {res.render('home', {doctorName : 
 app.use('/createPatient2', (req, res) => {
 	var error = "";
 	var patientNameArray = [];
-	var patientNumArray = [];
-	var phoneNum = req.body.phoneNum;
 	var patientUsername = req.body.username;
 	var patientPassword = req.body.password;
 	var patientName = req.body.name;
@@ -696,6 +695,8 @@ app.use('/createPatient2', (req, res) => {
 	var patientPastSurgeries = req.body.pastSurgeries;
 	var searchName = req.query.name;
 	var patientDoctors = [searchName];
+	var phoneNum = req.body.phoneNum;
+
 	if(error !== ""){
 		res.render('errorCreateNewPatient', {doctorName : searchName, errorMessage : error});
 		res.end();
@@ -746,6 +747,70 @@ app.use('/createPatient2', (req, res) => {
 		 		   });
 		  		  var additionalMessage = "Created " + patientUsername + ", to be monitored by you!";
 		  		  res.render('home', {doctorName : searchName, additionalMessage : additionalMessage});
+				}
+			});
+		}
+	});
+});
+
+app.use('/createPatientFromAndroid', (req, res) => {
+	console.log("Here");
+	console.log(req.body);
+	console.log(req.body.username);
+	var patientUsername = req.body.username;
+	var patientPassword = req.body.password;
+	var patientName = req.body.name;
+	var patientAge = req.body.age;
+	var patientGender = req.body.gender;
+	var patientInsuranceCompany = req.body.insComp;
+	var patientInsuranceNumber = req.body.insNum;
+	var patientAllergies = req.body.allergies;
+	var patientPastSurgeries = req.body.pastSurg;
+	var patientDoctors = req.body.doctorArray;
+	var searchName = patientDoctors[0];
+	var phoneNum = req.body.phoneNum;
+
+	// construct the Patient from the form data which is in the request body
+	var newPatient = new Patient ({
+		username: patientUsername,
+		password: patientPassword,
+		name: patientName,
+		age: patientAge,
+		gender: patientGender,
+		doctorArray: patientDoctors,
+		insuranceCompany: patientInsuranceCompany,
+		insuranceNumber: patientInsuranceNumber,
+		allergies: patientAllergies,
+		pastSurgeries: patientPastSurgeries,
+		phoneNum: phoneNum
+	    });
+
+	newPatient.save( (err) => { 
+		if (err) {
+		    error1 = "Username Already Exists or You Entered an Invalid Input";
+		    console.log(err);
+		    res.json({});
+		}
+	
+		else {
+			Doctor.findOne( {name: searchName}, (err, doctor) => { 
+				if (err) {
+		 		   console.log(err);
+				   res.json({});
+				}
+				else if (!doctor){
+				   console.log("No doctor");
+		 		   res.json({});
+				}
+				else{
+		  	  		doctor.patientArray.push(patientUsername);
+		   			doctor.save( (err) => { 
+					if (err) { 
+						console.log(err);
+						res.json({});
+					}
+					res.json({});
+		 		   });
 				}
 			});
 		}
@@ -1193,10 +1258,8 @@ app.use('/apiViewMedications', (req, res) => {
 
 			Medicine.find( queryObject, (err, medicines) => { 
 		if (err) {
-			res.type('html').status(200);
-			res.write('uh oh 2: ' + err);
 			console.log(err);
-			res.end();
+			res.json({});
 		} else if (medicines.length == 0) {
 			res.json({});
 		} else if (medicines.length == 1) {
