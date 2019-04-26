@@ -329,16 +329,16 @@ app.use('/sendMessage', (req, res) => {
 		}
 		else{
 			var patientArr = doctor.patientArray;
-			res.render('wenjie4', {patients : patientArr, doctorName : searchName});
+			res.render('addMessage', {patients : patientArr, doctorName : searchName});
 		}
 	});
 });
 
 app.use('/sendMessage2', (req, res)=>{
-	var searchNumber = req.body.phoneNum;
+	var searchNumber = req.body.username;
 	var doctorName = req.query.name;
 	var content = req.body.content;
-	Patient.findOne({phoneNum:searchNumber}, (err, patient) =>{
+	Patient.findOne({username:searchNumber}, (err, patient) =>{
 		if(err){
 			res.type('html').status(200);
 			res.write("uh oh: " + err);
@@ -346,7 +346,7 @@ app.use('/sendMessage2', (req, res)=>{
 		}
 		else if(!patient){
 			res.type('html').status(200);
-			res.send('No patient number is ' + searchNumber);
+			res.send('You have no patient with username ' + searchNumber);
 		}
 		else{
 			const accountSid = 'ACbe820095ebbf79dc1a4afc9e67b478a2';
@@ -357,10 +357,10 @@ app.use('/sendMessage2', (req, res)=>{
   			.create({
      			body: content,
      			from: '+12676869475',
-     			to: searchNumber
+     			to: patient.phoneNum
    			})
   			.then(message => console.log(message.sid));
-  			var additionalMessage = "Your message has been successfully sent! "
+  			var additionalMessage = "Your message has been successfully sent to " + searchName;
 			res.render('home', {doctorName: doctorName, additionalMessage : additionalMessage});
 		}
 	});
