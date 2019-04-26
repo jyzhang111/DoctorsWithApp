@@ -72,9 +72,9 @@ app.use("/created", (req, res) => {
 	newDoctor.save( (err) => { 
 		if (err) {
 		    res.type('html').status(200);
-		    res.write('uh oh: ' + err);
+		    res.write('Doctor Username with ' + req.body.name + " already exists. Try another username.");
 		    console.log(err);
-		    res.end();
+		    //res.end();
 		}
 		else {
 		    // display the "successfully created" page using EJS
