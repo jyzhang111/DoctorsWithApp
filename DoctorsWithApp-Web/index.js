@@ -1137,47 +1137,6 @@ app.use('/all', (req, res) => {
 	    }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
     });
 
-// route for accessing data via the web api
-// to use this, make a request for /api to get an array of all Person objects
-// or /api?name=[whatever] to get a single object
-app.use('/api', (req, res) => {
-	console.log("LOOKING FOR SOMETHING?");
-
-	// construct the query object
-	var queryObject = {};
-	if (req.query.name) {
-	    // if there's a name in the query parameter, use it here
-	    queryObject = { "name" : req.query.name };
-	}
-    
-	Person.find( queryObject, (err, persons) => {
-		console.log(persons);
-		if (err) {
-		    console.log('uh oh' + err);
-		    res.json({});
-		}
-		else if (persons.length == 0) {
-		    // no objects found, so send back empty json
-		    res.json({});
-		}
-		else if (persons.length == 1 ) {
-		    var person = persons[0];
-		    // send back a single JSON object
-		    res.json( { "name" : person.name , "age" : person.age } );
-		}
-		else {
-		    // construct an array out of the result
-		    var returnArray = [];
-		    persons.forEach( (person) => {
-			    returnArray.push( { "name" : person.name, "age" : person.age } );
-			});
-		    // send it back as JSON Array
-		    res.json(returnArray); 
-		}
-		
-	    });
-    });
-
 // route for cleaning everything
 app.use('/clean', (req, res) =>{ res.render('clean'); });
 
@@ -1282,28 +1241,7 @@ app.use('/apiViewMedications', (req, res) => {
 	if (req.query.patientName) {
 		queryObject = { "patientName" : req.query.patientName };
 	}
-	// var searchName = req.query.name;
-	// var medPatientName = req.query.patientName;
-	
-	// Doctor.findOne( {name: searchName}, (err, doctor) => { 
-		// if (err) {
-		//     res.type('html').status(200);
-		//     res.write('uh oh 1: ' + err);
-		//     console.log(err);
-		//     res.end();
-		// }
-		// else if (!doctor){
-		//     res.type('html').status(200);
-		//     res.send("No doctor named " + searchName);
-		// }
-		// else if(!doctor.patientArray.includes(medPatientName)){
-		// 	res.type('html').status(200);
-		//     	res.send("You are not  monitoring patient: " + medPatientName);
-		// }
-		// else {
-
-
-			Medicine.find( queryObject, (err, medicines) => { 
+		Medicine.find( queryObject, (err, medicines) => { 
 		if (err) {
 			console.log(err);
 			res.json({});

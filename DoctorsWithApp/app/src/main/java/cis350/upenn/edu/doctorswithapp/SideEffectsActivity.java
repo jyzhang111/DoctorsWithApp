@@ -19,16 +19,16 @@ public class SideEffectsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.side_effects_page);
-        Button btn = (Button) findViewById(R.id.showSideEffects);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //Button btn = (Button) findViewById(R.id.showSideEffects);
+        //btn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
                 String patientName = HomePageActivity.patientName;
                 //String patientName = "wenjie";
                 TreeSet<MedicationInfo> patientMedicationInfo = medications.get(patientName);
                 if(patientMedicationInfo == null){
                     TextView textView = (TextView) findViewById(R.id.sideEffectsDisplay);
-                    textView.setText("Could not find any pills for patient: " + patientName);
+                    textView.setText("You don't have any assigned medications!");
                 }
                 else {
                     String content = "";
@@ -36,14 +36,14 @@ public class SideEffectsActivity extends AppCompatActivity {
 
                         content += eachMedication.getName();
                         content += ": ";
-                        content += eachMedication.getSideEffectList().toString();
+                        content += eachMedication.getSideEffectList().toString() + "\n";
                     }
 
                     TextView textView = (TextView) findViewById(R.id.sideEffectsDisplay);
-                    textView.setText("Here is side effects: \n" + content);
+                    textView.setText(content);
                 }
-            }
-        });
+           // }
+     //   });
     }
     public void onBackButtonClick(View view){
         Intent i = new Intent();

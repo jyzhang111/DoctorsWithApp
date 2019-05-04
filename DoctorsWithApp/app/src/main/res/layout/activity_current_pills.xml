@@ -19,45 +19,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Current Pills"
+        android:text="Current Medications"
         android:textColorLink="@color/colorPrimary"
         android:textSize="30sp" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/back"
-            android:layout_width="412dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_weight="30"
-            android:onClick="onBackButtonClick"
-            android:text="Back to Main" />
-
-        <Button
-            android:id="@+id/Current_Pills"
-            android:layout_width="429dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_weight="30"
-            android:onClick="onBackButtonClick"
-            android:text="Show Pills" />
-
-
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="350dp">
-    <TextView
-        android:id="@+id/pillInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/pillInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp" />
     </ScrollView>
 
     <Button
@@ -66,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="open time picker"
+        android:text="set Alarm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -78,14 +52,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_timepicker"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="2dp"
         android:text="cancel alarm" />
 
-    <TextView
-        android:id="@+id/pillOne"
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp" />
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBackButtonClick"
+            android:text="Back to Main" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

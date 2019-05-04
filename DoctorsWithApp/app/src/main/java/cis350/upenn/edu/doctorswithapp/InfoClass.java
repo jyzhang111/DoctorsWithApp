@@ -58,7 +58,7 @@ public class InfoClass extends AppCompatActivity {
         doctor.setText("DOCTOR: " + docString);
         allergies.setText("ALLERGIES: " + patient.getAllergies());
         pastSurgeries.setText("PAST SURGERIES: " + patient.getPastSurgeries());
-        phoneNum.setText("Patient Phone Number: "+ patient.getPhoneNum());
+        phoneNum.setText("MY PHONE NUMBER: "+ patient.getPhoneNum());
 
 
 

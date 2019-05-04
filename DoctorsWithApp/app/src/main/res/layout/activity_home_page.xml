@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCurrentPillsButtonClick"
-            android:text="Current Pills"
+            android:text="Current Medications"
             android:visibility="visible" />
 
         <Button
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onPastPillsButtonClick"
-            android:text="Past Pills"
+            android:text="Past Medications"
             android:visibility="visible" />
         <Button
             android:id="@+id/getSideEffects"

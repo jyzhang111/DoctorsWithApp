@@ -21,20 +21,20 @@ public class PastPillsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.past_pills_page);
-        Button btn = (Button) findViewById(R.id.Past_Pills);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //Button btn = (Button) findViewById(R.id.Past_Pills);
+        //btn.setOnClickListener(new View.OnClickListener() {
+         //   @Override
+         //   public void onClick(View v) {
                 String patientName = HomePageActivity.patientName;
                 //String patientName = "wenjie";
                 TreeSet<MedicationInfo> patientMedicationInfo = medications.get(patientName);
 
                 if(patientMedicationInfo == null){
                     TextView textView = (TextView) findViewById(R.id.pillsDisplay);
-                    textView.setText("Could not find any pills for patient: " + patientName);
+                    textView.setText("You have no past medications!");
                 }
                 else {
-                    String content = patientName + ":";
+                    String content = "";
                     for (MedicationInfo eachMedication : patientMedicationInfo) {
 
                         if (eachMedication.getPillStatus()) {
@@ -44,11 +44,15 @@ public class PastPillsActivity extends AppCompatActivity {
                     }
 
                     TextView textView = (TextView) findViewById(R.id.pillsDisplay);
-                    textView.setText("Here is your past pills: \n" + content);
+                    if(content.isEmpty()) {
+                        textView.setText("You have no past medications!");
+                    } else {
+                        textView.setText("Here are your past pills: \n" + content);
+                    }
                 }
 
-            }
-        });
+        //    }
+        //});
 
 
     }

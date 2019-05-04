@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import cis350.upenn.edu.doctorswithapp.data.FileMedicationReader;
 import cis350.upenn.edu.doctorswithapp.shared_classes.MedicationInfo;
 
 public class CurrentPillsActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -31,7 +30,6 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_pills);
-        Button btn = (Button) findViewById(R.id.Current_Pills);
 
         mTextView = findViewById(R.id.textView);
 
@@ -53,100 +51,75 @@ public class CurrentPillsActivity extends AppCompatActivity implements TimePicke
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int counter = 1;
-                String patientName = HomePageActivity.patientName;
+        int counter = 1;
+        String patientName = HomePageActivity.patientName;
 
-                if (medications == null || medications.size() == 0) {
-                    TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
-                    pillNumber.setText("Could not find any pills for patient: " + patientName);
+        if (medications == null || medications.size() == 0) {
+            TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
+            pillNumber.setText("You do not have any assigned pills!");
+        }
+
+        TreeSet<MedicationInfo> patientMedInfo = medications.get(patientName);
+
+        if (patientMedInfo == null || patientMedInfo.size() == 0){
+            TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
+            pillNumber.setText("You do not have any assigned pills!");
+        } else {
+            String infoStr = "";
+
+            for (MedicationInfo medInfo : patientMedInfo) {
+                if(medInfo.getPillStatus()){
+                    continue;
                 }
 
-                TreeSet<MedicationInfo> patientMedInfo = medications.get(patientName);
+                infoStr = infoStr + "<PILL NUMBER " + counter + ">\n";
+                infoStr = infoStr + "NAME OF PILL:   " + medInfo.getName() + "\n";
+                infoStr = infoStr + "DOSAGE:   " + medInfo.getDosage() + "\n";
+                infoStr = infoStr + "NUMBER OF TIMES PER DAY:   " + medInfo.getNumPerDay() + "\n";
 
-                if (patientMedInfo == null || patientMedInfo.size() == 0){
-                    TextView pillNumber = (TextView) findViewById(R.id.pillInfo);
-                    pillNumber.setText("Could not find any pills for patient: " + patientName);
-
-                }
-                else {
-                    String infoStr = "";
-
-                    for (MedicationInfo medInfo : patientMedInfo) {
-                        if(medInfo.getPillStatus()){
-                            continue;
-                        }
-
-                        infoStr = infoStr + "Pill number:   " + counter + "\n";
-                        infoStr = infoStr + "Name of pill:   " + medInfo.getName() + "\n";
-                        infoStr = infoStr + "Dosage:   " + medInfo.getDosage() + "\n";
-                        infoStr = infoStr + "Number of times to take pills in a day:   " + medInfo.getNumPerDay() + "\n";
-
-                        infoStr = infoStr + "Schedule:   ";
-                        List<String> scheduleList = medInfo.getSchedule();
-                        for (int i = 0; i < scheduleList.size(); i++) {
-                            if (i != scheduleList.size() - 1) {
-                                infoStr = infoStr + scheduleList.get(i) + ", ";
-                            } else {
-                                infoStr = infoStr + scheduleList.get(i) + "\n";
-                            }
-                        }
-
-                        infoStr = infoStr + "Usage:   ";
-                        List<String> usageList = medInfo.getUsages();
-                        for (int i = 0; i < usageList.size(); i++) {
-                            if (i != usageList.size() - 1) {
-                                infoStr = infoStr + usageList.get(i) + ", ";
-                            } else {
-                                infoStr = infoStr + usageList.get(i) + "\n";
-                            }
-                        }
-                        infoStr = infoStr + "Side effect:   ";
-                        List<String> sideEffectList = medInfo.getSideEffectList();
-                        for (int i = 0; i < sideEffectList.size(); i++) {
-                            if (i != sideEffectList.size() - 1) {
-                                infoStr = infoStr + sideEffectList.get(i) + ", ";
-                            } else {
-                                infoStr = infoStr + sideEffectList.get(i) + "\n";
-                            }
-                        }
-
-                        infoStr = infoStr + "Color: " + medInfo.getColor() + "\n";
-
-                        infoStr = infoStr + "\n";
-                        counter = counter + 1;
+                infoStr = infoStr + "SCHEDULE:   ";
+                List<String> scheduleList = medInfo.getSchedule();
+                for (int i = 0; i < scheduleList.size(); i++) {
+                    if (i != scheduleList.size() - 1) {
+                        infoStr = infoStr + scheduleList.get(i) + ", ";
+                    } else {
+                        infoStr = infoStr + scheduleList.get(i) + "\n";
                     }
-
-                    if(infoStr.equals("")){
-                        infoStr = "All pills for current patient are past.";
-                    }
-
-                    TextView pillInformation = (TextView) findViewById(R.id.pillInfo);
-                    pillInformation.setText(infoStr);
-
                 }
+
+                infoStr = infoStr + "USAGE:   ";
+                List<String> usageList = medInfo.getUsages();
+                for (int i = 0; i < usageList.size(); i++) {
+                    if (i != usageList.size() - 1) {
+                        infoStr = infoStr + usageList.get(i) + ", ";
+                    } else {
+                        infoStr = infoStr + usageList.get(i) + "\n";
+                    }
+                }
+                infoStr = infoStr + "SIDE EFFECT(S):   ";
+                List<String> sideEffectList = medInfo.getSideEffectList();
+                for (int i = 0; i < sideEffectList.size(); i++) {
+                    if (i != sideEffectList.size() - 1) {
+                        infoStr = infoStr + sideEffectList.get(i) + ", ";
+                    } else {
+                        infoStr = infoStr + sideEffectList.get(i) + "\n";
+                    }
+                }
+
+                infoStr = infoStr + "COLOR: " + medInfo.getColor() + "\n";
+
+                infoStr = infoStr + "\n";
+                counter = counter + 1;
             }
-        });
+
+            if(infoStr.equals("")){
+                infoStr = "You only have past pills!";
+            }
+
+            TextView pillInformation = (TextView) findViewById(R.id.pillInfo);
+            pillInformation.setText(infoStr);
+        }
     }
-
-
-//                            TextView pillName = (TextView) findViewById(R.id.pillName);
-//                            TextView dosage = (TextView) findViewById(R.id.dosage);
-//                            TextView numPerDay = (TextView) findViewById(R.id.numPerDay);
-//                            TextView schedule = (TextView) findViewById(R.id.schedule);
-//                            TextView usage = (TextView) findViewById(R.id.usage);
-//                            TextView sideEffect = (TextView) findViewById(R.id.sideEffect);
-
-//                            pillNumber.setText("Pill number: " + counter);
-//                            pillName.setText("Name of pill: " + medInfo.getName());
-//                            dosage.setText("Dosage: " + medInfo.getDosage());
-//                            numPerDay.setText("Number of times to take pills in a day: " + medInfo.getNumPerDay());
-//                            schedule.setText("Time to take pill: " + medInfo.getSchedule().get("1"));
-//                            usage.setText("Usage of pill: " + medInfo.getUsages().get(0));
-//                            sideEffect.setText("Side effect of pill: " + medInfo.getSideEffectList().get(0));
-
 
 
 
