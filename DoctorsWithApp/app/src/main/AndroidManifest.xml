@@ -23,6 +23,7 @@
         <activity android:name=".InfoClass" />
         <activity android:name=".PastPillsActivity" />
         <activity android:name=".SideEffectsActivity" />
+        <activity android:name=".MessageActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

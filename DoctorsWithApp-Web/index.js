@@ -18,6 +18,7 @@ var Patient = require('./Patient.js');
 
 var Medicine = require('./Medicine.js');
 
+var Message = require('./Message.js')
 /***************************************/
 
 // route for logging in
@@ -360,7 +361,7 @@ app.use('/sendMessage2', (req, res)=>{
      			to: patient.phoneNum
    			})
   			.then(message => console.log(message.sid));
-  			var additionalMessage = "Your message has been successfully sent to " + searchName;
+  			var additionalMessage = "Your message has been successfully sent to " + searchNumber;
 			res.render('home', {doctorName: doctorName, additionalMessage : additionalMessage});
 		}
 	});
@@ -785,6 +786,7 @@ app.use('/createPatientFromAndroid', (req, res) => {
 		phoneNum: phoneNum
 	    });
 
+
 	newPatient.save( (err) => { 
 		if (err) {
 		    error1 = "Username Already Exists or You Entered an Invalid Input";
@@ -818,6 +820,51 @@ app.use('/createPatientFromAndroid', (req, res) => {
 });	
 
 
+app.use('/receiveMessageFromAndroid', (req, res)=>{
+	messageBox = req.body.messageArray;
+	doctorName = req.body.doctorName;
+	patientName = req.body.patientName;
+	message = new Message({content:messageBox.pop(), doctorName:doctorName, patientName:patientName});
+	console.log(message);
+	message.save((err)=>{
+		if(err){
+			console.log(err);
+			res.json({});
+		}
+		else{
+			res.json({});
+		}
+	});
+});
+
+app.use('/checkMessage', (req, res)=>{
+	var currentDoctor = req.query.name;
+	console.log(currentDoctor);
+	Message.find({doctorName:currentDoctor}, (err, messages) => {
+		if(err){
+			res.type('html').status(200);
+		    res.write('uh oh: ' + err);
+		    console.log(err);
+		    res.end();
+		}
+		else if(!messages){
+			res.type('html').status(200);
+		    res.send("No message sent from patient!");
+		}
+		else{
+			var messageString = "";
+			var messageArray = [];
+			    for(var i=0; i<messages.length; i++){
+			    messageString = "";
+				messageString += messages[i].patientName + ": ";
+				messageString += messages[i].content + "\n";
+				messageArray.push(messageString);
+				}
+				
+			res.render('showMessage', {doctorName:currentDoctor, message:messageArray});
+		}
+	});
+});
 
 app.use('/remove', (req, res) => {
 	var searchName = req.query.name;
@@ -1201,7 +1248,7 @@ app.use('/apiPatient', (req, res) => {
 	if (req.query.name) {
 		queryObject = { "name" : req.query.name};
 	}
-
+	console.log(queryObject);
 	Patient.find( queryObject, (err, persons) => {
 		console.log(persons);
 		if(err) {

@@ -60,4 +60,9 @@ public class HomePageActivity extends AppCompatActivity {
         Intent i = new Intent(this, CurrentPillsActivity.class);
         startActivity(i);
     }
+    public void onSendMessageButtonClick(View view){
+        Intent i = new Intent(this, MessageActivity.class);
+        i.putExtra("USERNAME", patientName);
+        startActivity(i);
+    }
 }

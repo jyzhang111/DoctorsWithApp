@@ -94,4 +94,5 @@ public class PatientInfo {
     public void addAllergy(String allerg) { this.allergies = this.allergies + allerg; }
     public void addSurgery(String surgery) { this.pastSurgeries = this.pastSurgeries + surgery; }
     public void setPhoneNum(int phoneNum){this.phoneNum = phoneNum;}
+    public String getDoctorName(){return doctors.get(0).getName();}
 }

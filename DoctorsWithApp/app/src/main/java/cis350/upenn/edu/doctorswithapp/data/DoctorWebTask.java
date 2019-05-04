@@ -1,11 +1,16 @@
 package cis350.upenn.edu.doctorswithapp.data;
 
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
 
 public class DoctorWebTask extends AsyncTask<URL, String, String> {
     /*
@@ -13,6 +18,16 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> {
     method is invoked.
     The arguments passed to "execute" are passed to this method.
     */
+    private ArrayList<String> message;
+    private String docName;
+    private String patientName;
+    public DoctorWebTask(String docName, ArrayList<String> message, String patientName){
+        this.message = message;
+        this.docName = docName;
+        this.patientName = patientName;
+    }
+
+    public DoctorWebTask(){}
     protected String doInBackground(URL... urls) {
         StringBuilder sb = new StringBuilder();
         URL url = urls[0];
@@ -76,8 +91,22 @@ public class DoctorWebTask extends AsyncTask<URL, String, String> {
                 HttpURLConnection conn =
                         (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                conn.connect();
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+                JSONObject obj = new JSONObject();
 
+                obj.put("messageArray", new JSONArray(message));
+                obj.put("doctorName", docName);
+                obj.put("patientName", patientName);
+                OutputStream os = conn.getOutputStream();
+                Log.v("debug1", docName);
+                os.write(obj.toString().getBytes("UTF-8"));
+                os.close();
+                conn.getResponseCode();
+                conn.disconnect();
+
+                return "Ok";
             } catch (Exception e) {
                 return e.toString();
             }

@@ -1,8 +1,6 @@
 package cis350.upenn.edu.doctorswithapp;
-
 import cis350.upenn.edu.doctorswithapp.shared_classes.PatientInfo;
 import cis350.upenn.edu.doctorswithapp.shared_classes.Doctor;
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import java.util.List;
 
 
 public class InfoClass extends AppCompatActivity {
-
 
 
     @Override
@@ -62,6 +59,8 @@ public class InfoClass extends AppCompatActivity {
         allergies.setText("ALLERGIES: " + patient.getAllergies());
         pastSurgeries.setText("PAST SURGERIES: " + patient.getPastSurgeries());
         phoneNum.setText("Patient Phone Number: "+ patient.getPhoneNum());
+
+
 
     }
 

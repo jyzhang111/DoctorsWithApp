@@ -60,4 +60,5 @@ public class FileDoctorReader implements DoctorReader{
         }
         return doctors;
     }
+    public void put(String name, ArrayList<String> message, String patientName){};
 }

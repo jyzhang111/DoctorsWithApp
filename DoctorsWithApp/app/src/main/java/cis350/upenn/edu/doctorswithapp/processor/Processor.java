@@ -1,5 +1,7 @@
 package cis350.upenn.edu.doctorswithapp.processor;
 
+import android.util.Log;
+
 import cis350.upenn.edu.doctorswithapp.data.DoctorReader;
 import cis350.upenn.edu.doctorswithapp.data.PatientReader;
 import cis350.upenn.edu.doctorswithapp.data.MedicationReader;
@@ -19,6 +21,7 @@ public abstract class Processor {
     private MedicationReader med;
     private Map<String, PatientInfo> patients;
     private List<Doctor> doctors;
+    private String doctorName;
 //    private Map<String, TreeSet<MedicationInfo>> medications;
 
 
@@ -42,6 +45,7 @@ public abstract class Processor {
 
     public void createNewAccount(String user, String password, String name, int age, String gender, String doctor,
                                  String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries, int phoneNum){
+        this.doctorName = doctor;
         Doctor doc = new Doctor(doctor, new String[0]);
         PatientInfo temp = new PatientInfo(password, name, age, gender, doc, insuranceCompany, insuranceNumber, allergies, pastSurgeries, phoneNum);
         patients.put(user, temp);
@@ -65,6 +69,28 @@ public abstract class Processor {
         } else {
             return null;
         }
+    }
+
+    public void setDoctorName(String doctorName){
+        this.doctorName = doctorName;
+    }
+
+    public String getDoctorName(){
+        //Log.v("here", "i am here");
+        return this.doctorName;
+    }
+    public void writeMessage(String message, String data){
+        PatientInfo p = getPatient(data);
+        List<Doctor> doctors = p.getDoctors();
+        for(Doctor d : doctors){
+            d.setMessage(message);
+            d.printString();
+            Log.v("printName", d.getName());
+            dr.put(d.getName(), d.getMessage(), p.getName());
+
+
+        }
+
     }
 
     public Map<String, TreeSet<MedicationInfo>> getMedications(){
