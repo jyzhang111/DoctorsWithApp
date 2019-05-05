@@ -86,7 +86,7 @@ public class PatientWebTask extends AsyncTask<URL, String, String>{
                     String pastSurgeries = jo.getString("pastSurg");
                     sb.append(pastSurgeries + "\t");
 
-                    int phoneNum = jo.getInt("phoneNum");
+                    long phoneNum = jo.getLong("phoneNum");
                     sb.append(phoneNum + "\n");
                 }
                 else {
@@ -131,7 +131,7 @@ public class PatientWebTask extends AsyncTask<URL, String, String>{
                         String pastSurgeries = jo.getString("pastSurg");
                         sb.append(pastSurgeries + "\t");
 
-                        int phoneNum = jo.getInt("phoneNum");
+                        long phoneNum = jo.getLong("phoneNum");
                         sb.append(phoneNum + "\n");
                     }
                 }

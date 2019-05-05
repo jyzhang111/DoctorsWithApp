@@ -60,7 +60,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         String pastSurgs = insuranceComp.getText().toString();
 
         EditText phoneNum = (EditText)findViewById(R.id.phoneNum);
-        int p = Integer.parseInt(phoneNum.getText().toString());
+        long p = Long.parseLong(phoneNum.getText().toString());
 
         boolean correct = true;
         if(MainActivity.processor.usernameTaken(user)){

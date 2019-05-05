@@ -44,7 +44,7 @@ public abstract class Processor {
 
 
     public void createNewAccount(String user, String password, String name, int age, String gender, String doctor,
-                                 String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries, int phoneNum){
+                                 String insuranceCompany, String insuranceNumber, String allergies, String pastSurgeries, long phoneNum){
         this.doctorName = doctor;
         Doctor doc = new Doctor(doctor, new String[0]);
         PatientInfo temp = new PatientInfo(password, name, age, gender, doc, insuranceCompany, insuranceNumber, allergies, pastSurgeries, phoneNum);
