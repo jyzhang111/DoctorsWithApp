@@ -95,56 +95,56 @@ public class NotificationHelper extends ContextWrapper {
         }
 
 
-        String modifiedMessage =  medName + "now! Dosage: " + medDosage + ", Color: " +
-                medColor + ", Usage: " + medUsage + ", Side Effect: " + medSideEffect;
+        String modifiedMessage =  medDosage + " of " + medColor + " " + medName + " for " + medUsage + " now! Some" +
+                " side effects are " + medSideEffect;
 
         if (medColor.equals("red")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_light));
 
         } else if (medColor.equals("orange")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_orange_dark));
 
         } else if (medColor.equals("yellow")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_orange_light));
 
         } else if (medColor.equals("green")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_green_dark));
 
         } else if (medColor.equals("blue")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_bright));
 
         } else if (medColor.equals("indigo")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_dark));
 
         } else if (medColor.equals("violet")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_purple));
 
         } else if (medColor.equals("brown")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
 
         } else if (medColor.equals("white")) {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
         } else {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setContentText(message + modifiedMessage).setSmallIcon(R.drawable.ic_default)
                     .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.black));
         }
     }
