@@ -46,6 +46,7 @@ public class InfoClass extends AppCompatActivity {
                 docString += currDoc.getName() + "/";
             }
         }
+        docString = docString.substring(0, docString.length()-1);
 
 
 
