@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-
+import android.support.v4.content.ContextCompat;
+import java.util.Date;
+import java.util.List;
 
 import java.util.Map;
 import java.util.TreeSet;
@@ -20,12 +22,9 @@ public class NotificationHelper extends ContextWrapper {
     public static final String channelL1Name = "Channel 1";
 
     private NotificationManager mManager;
-    boolean isFirstTime = true;
 
 
     private Map<String, TreeSet<MedicationInfo>> medications = MainActivity.processor.getMedications();
-
-
 
 
     public NotificationHelper(Context base) {
@@ -55,46 +54,98 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannel1Notification(String title, String message) {
-        if (isFirstTime) {
-            isFirstTime = false;
-            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message).setSmallIcon(R.drawable.ic_red);
+        TreeSet<MedicationInfo> medicineSet = medications.get(HomePageActivity.patientName);
 
+        Date currDate = new Date();
+        int currHour = currDate.getHours();
+
+        String medName = "";
+        String medDosage = "";
+        String medColor = "";
+        String medUsage = "";
+        String medSideEffect = "";
+
+
+        for (MedicationInfo medicine : medicineSet) {
+            List<String> schedule = medicine.getSchedule();
+            for (int i = 0; i < schedule.size(); i++) {
+                String scheduleHour = schedule.get(i).split(":")[0];
+                if (Integer.parseInt(scheduleHour) == currHour) {
+                    medName += medicine.getName();
+                    medDosage += "" + medicine.getDosage();
+                    medColor += medicine.getColor();
+                    List<String> usageList = medicine.getUsages();
+                    for (int j = 0; j < usageList.size(); j++) {
+                        if (j == usageList.size() - 1) {
+                            medUsage += usageList.get(j);
+                        } else {
+                            medUsage += usageList.get(j) + ", ";
+                        }
+                    }
+                    List<String> sideEffectList = medicine.getSideEffectList();
+                    for (int k = 0; k < sideEffectList.size(); k++) {
+                        if (k == sideEffectList.size() - 1) {
+                            medSideEffect += sideEffectList.get(k);
+                        } else {
+                            medSideEffect += sideEffectList.get(k) + ", ";
+                        }
+                    }
+                }
+            }
+        }
+
+
+        String modifiedMessage =  medName + "now! Dosage: " + medDosage + ", Color: " +
+                medColor + ", Usage: " + medUsage + ", Side Effect: " + medSideEffect;
+
+        if (medColor.equals("red")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_light));
+
+        } else if (medColor.equals("orange")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_orange_dark));
+
+        } else if (medColor.equals("yellow")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_orange_light));
+
+        } else if (medColor.equals("green")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_green_dark));
+
+        } else if (medColor.equals("blue")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_bright));
+
+        } else if (medColor.equals("indigo")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_blue_dark));
+
+        } else if (medColor.equals("violet")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_purple));
+
+        } else if (medColor.equals("brown")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark));
+
+        } else if (medColor.equals("white")) {
+            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
         } else {
             return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-                    .setContentText(message).setSmallIcon(R.drawable.ic_blue);
+                    .setContentText(message + ", " + modifiedMessage).setSmallIcon(R.drawable.ic_default)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), android.R.color.black));
         }
-//        String color = message.split(":")[0];
-//        if (color.equals("red")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_red);
-//        } else if (color.equals("orange")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_orange);
-//        } else if (color.equals("yellow")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_yellow);
-//        } else if (color.equals("green")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_green);
-//        } else if (color.equals("blue")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_blue);
-//        } else if (color.equals("indigo")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_indigo);
-//        } else if( color.equals("violet")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_violet);
-//        } else if (color.equals("brown")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_brown);
-//        } else if (color.equals("white")) {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_white);
-//        } else {
-//            return new NotificationCompat.Builder(getApplicationContext(), channelL1ID).setContentTitle(title)
-//                    .setContentText(message).setSmallIcon(R.drawable.ic_black);
-//        }
     }
 }
